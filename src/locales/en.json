@@ -1,0 +1,142 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "download": "Download",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "readMore": "Read More",
+    "contactUs": "Contact Us",
+    "signUp": "Sign Up",
+    "signIn": "Sign In"
+  },
+  "navigation": {
+    "home": "Home",
+    "features": "Features",
+    "about": "About Us",
+    "contact": "Contact",
+    "joinDriver": "Join as Driver",
+    "joinCompany": "Join as Company"
+  },
+  "hero": {
+    "slide1": {
+      "title": "Fast, Safe, and",
+      "titleHighlight1": "Reliable",
+      "titleHighlight2": "Fingertips!",
+      "subtitle": "Rides at Your",
+      "description": "Get instant ride matches with verified drivers, track your ride in real-time, and enjoy seamless payment options for a hassle-free journey."
+    },
+    "slide2": {
+      "title": "Your Ride,",
+      "titleHighlight1": "Your Way",
+      "subtitle": "Book Instantly,",
+      "titleHighlight2": "Travel Safely!",
+      "description": "Connect with verified drivers, book rides instantly, and enjoy safe, convenient transportation wherever you need to go."
+    },
+    "slide3": {
+      "title": "Join Thousands of",
+      "titleHighlight1": "Drivers",
+      "subtitle": "Earning with",
+      "titleHighlight2": "Bourter!",
+      "description": "Start earning flexible income as a driver or manage your fleet as a company — all with transparent pricing and reliable support."
+    },
+    "appStore": "App Store",
+    "playStore": "Play Store"
+  },
+  "allInOne": {
+    "title": "Your All-In-One",
+    "titleHighlight": "Ride-Sharing Platform!",
+    "description": "Experience the future of transportation with Bourter. We connect you with top-rated drivers instantly, offering a seamless blend of comfort, reliability, and advanced technology. From precision tracking to effortless payments, elevate your daily travel experience."
+  },
+  "howItWorks": {
+    "title": "How It",
+    "titleHighlight": "Works!",
+    "description": "Our platform brings together riders and drivers seamlessly – helping you book faster, travel safer, and reach your destination with ease and convenience.",
+    "step1": {
+      "description": "Enter your destination to instantly view available rides, upfront pricing, and estimated arrival times.",
+      "action": "Request."
+    },
+    "step2": {
+      "description": "Get matched with a nearby, background-checked driver. View their profile, vehicle details, and rating.",
+      "action": "Match."
+    },
+    "step3": {
+      "description": "Watch your driver arrive in real-time. Hop in and enjoy a safe, comfortable journey to your destination.",
+      "action": "Ride."
+    },
+    "step4": {
+      "description": "Arrive safely and pay seamlessly. Rate your experience to help us maintain our high community standards.",
+      "action": "Arrive."
+    }
+  },
+  "features": {
+    "title": "Why Choose",
+    "titleHighlight": "Bourter",
+    "feature1Title": "Real-Time Ride Tracking & Navigation!",
+    "feature1Desc": "Never wonder where your ride is. With our precision GPS tracking, monitor your driver's exact location, route, and ETA in real-time. Share your trip status with loved ones for added security.",
+    "feature2Title": "Choose Your Preferred Ride Type!",
+    "feature2Desc": "Ride your way. Choose from Economy for everyday value, Comfort for extra room, or Luxury so you can arrive in style. Filter by price, vehicle size, and driver rating to match your exact needs.",
+    "feature3Title": "Secure Payments & Easy Transactions!",
+    "feature3Desc": "Pay your way, securely. Whether you prefer cash, credit card, or digital wallet, we've got you covered. Our encrypted payment system ensures every transaction is safe, transparent, and instant."
+  },
+  "whyChooseUs": {
+    "title": "Why Choose",
+    "titleHighlight": "Us!",
+    "description": "A trusted platform built to make every ride safe, convenient, and reliable.",
+    "reason1Title": "Verified Drivers & Vehicles",
+    "reason1Desc": "Every driver on our platform is verified, background-checked, and rated – giving you peace of mind while traveling safely.",
+    "reason2Title": "All-in-One Ride Platform",
+    "reason2Desc": "From booking rides to tracking in real-time, secure payments, and managing your ride history.",
+    "reason3Title": "Safety Features, Always Active",
+    "reason3Desc": "Access emergency assistance, share ride details with contacts, and enjoy 24/7 support — anytime, anywhere.",
+    "reason4Title": "Innovation Meets Reliability",
+    "reason4Desc": "We combine cutting-edge technology with trusted service to ensure your ride is both convenient and completely hassle-free."
+  },
+  "joinSection": {
+    "title": "Join the",
+    "titleHighlight": "Bourter Community",
+    "description": "Choose your path and start your journey with us. Whether you're driving yourself or managing a fleet, we have the right tools for you.",
+    "driverTitle": "Join as a Driver",
+    "driverDesc": "Be your own boss and earn on your schedule. Connect with passengers instantly and get paid quickly.",
+    "driverFeature1": "Flexible Working Hours",
+    "driverFeature2": "Instant Ride Requests",
+    "driverFeature3": "Secure Payments",
+    "driverFeature4": "Keep 100% of Your Tips",
+    "driverButton": "Become a Driver",
+    "companyTitle": "Join as a Company",
+    "companyDesc": "Scale your fleet business with our powerful management tools. Track drivers, manage earnings, and grow efficiently.",
+    "companyFeature1": "Fleet Management Dashboard",
+    "companyFeature2": "Real-time Driver Tracking",
+    "companyFeature3": "Detailed Earning Reports",
+    "companyFeature4": "Business Support",
+    "companyButton": "Register Company"
+  },
+  "faq": {
+    "title": "Frequently",
+    "titleHighlight": "Asked Questions!",
+    "description": "Find clear answers to the most common questions about booking rides, becoming a driver, or joining as a company on the Bourter platform.",
+    "question1": "How do I book a ride?",
+    "answer1": "It's simple. Open the Bourter app, enter your destination, and tap 'Request Ride'. You'll instantly see upfront pricing and be matched with the nearest available driver.",
+    "question2": "What makes Bourter different?",
+    "answer2": "Bourter prioritizes safety, transparency, and fairness. We rigorously vet our drivers, offer real-time tracking for every trip, and ensure competitive pricing for riders while providing better earnings for drivers.",
+    "question3": "Is the app free to download?",
+    "answer3": "Absolutely. The Bourter app is 100% free to download on both iOS and Android. You only pay for the rides you take, with no hidden subscription fees.",
+    "question4": "How do I sign up as a driver?",
+    "answer4": "Click 'Join as Driver' in the menu or download our Driver App. Fill in your details, upload your documents, and once verified, you can start accepting rides and earning immediately.",
+    "question5": "What is the Company Panel?",
+    "answer5": "The Company Panel is a powerful tool for fleet owners. It allows you to register your company, manage multiple drivers and vehicles, track daily earnings, and optimize your business operations from one dashboard."
+  },
+  "downloadBanner": {
+    "title": "Start Your Journey",
+    "titleHighlight": "With Bourter — One Ride at a Time.",
+    "description": "Don't just travel — experience convenient, safe rides with verified drivers and reliable service built around you."
+  },
+  "footer": {
+    "companyDesc": "Your Reliable Ride-Sharing Partner",
+    "contactUs": "Contact Us",
+    "newsletter": "Newsletter",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "copyright": "@2025 Bourter",
+    "allRightsReserved": "All Rights Reserved"
+  }
+}

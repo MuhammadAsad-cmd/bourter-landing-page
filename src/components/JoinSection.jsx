@@ -1,17 +1,39 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const JoinSection = () => {
+    const { locale } = useLanguage();
+    const messages = getTranslations(locale);
+    const { t } = useTranslations(messages);
+
+    const driverFeatures = [
+        t("joinSection.driverFeature1"),
+        t("joinSection.driverFeature2"),
+        t("joinSection.driverFeature3"),
+        t("joinSection.driverFeature4"),
+    ];
+
+    const companyFeatures = [
+        t("joinSection.companyFeature1"),
+        t("joinSection.companyFeature2"),
+        t("joinSection.companyFeature3"),
+        t("joinSection.companyFeature4"),
+    ];
+
     return (
         <section className="bg-linear-to-b from-white to-gray-50 py-16 md:py-24">
             <div className="container">
                 <div className="text-center mb-12 md:mb-16">
                     <h2 className="text-3xl md:text-4xl lg:text-[50px] font-bold mb-6 text-black">
-                        Join the <span className="text-primary">Bourter</span> Community
+                        {t("joinSection.title")} <span className="text-primary">{t("joinSection.titleHighlight")}</span>
                     </h2>
                     <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                        Choose your path and start your journey with us. Whether you're driving yourself or managing a fleet, we have the right tools for you.
+                        {t("joinSection.description")}
                     </p>
                 </div>
 
@@ -31,15 +53,15 @@ const JoinSection = () => {
                             </div>
 
                             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                                Join as a Driver
+                                {t("joinSection.driverTitle")}
                             </h3>
 
                             <div className="space-y-4 mb-8 grow">
                                 <p className="text-gray-600 leading-relaxed">
-                                    Be your own boss and earn on your schedule. Connect with passengers instantly and get paid quickly.
+                                    {t("joinSection.driverDesc")}
                                 </p>
                                 <ul className="space-y-3">
-                                    {['Flexible Working Hours', 'Instant Ride Requests', 'Secure Payments', 'Keep 100% of Your Tips'].map((item, i) => (
+                                    {driverFeatures.map((item, i) => (
                                         <li key={i} className="flex items-center text-gray-700">
                                             <div className="w-1.5 h-1.5 rounded-full bg-primary mr-3" />
                                             {item}
@@ -56,7 +78,7 @@ const JoinSection = () => {
                                     boxShadow: "2px 2px 2px 0px #FFFFFF33 inset, -2px -2px 2px 0px #FFFFFF33 inset",
                                 }}
                             >
-                                Become a Driver
+                                {t("joinSection.driverButton")}
                             </Link>
                         </div>
                     </div>
@@ -74,15 +96,15 @@ const JoinSection = () => {
                             </div>
 
                             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                                Join as a Company
+                                {t("joinSection.companyTitle")}
                             </h3>
 
                             <div className="space-y-4 mb-8 grow">
                                 <p className="text-gray-600 leading-relaxed">
-                                    Scale your fleet business with our powerful management tools. Track drivers, manage earnings, and grow efficiently.
+                                    {t("joinSection.companyDesc")}
                                 </p>
                                 <ul className="space-y-3">
-                                    {['Fleet Management Dashboard', 'Real-time Driver Tracking', 'Detailed Earning Reports', 'Business Support'].map((item, i) => (
+                                    {companyFeatures.map((item, i) => (
                                         <li key={i} className="flex items-center text-gray-700">
                                             <div className="w-1.5 h-1.5 rounded-full bg-[#06294A] mr-3" />
                                             {item}
@@ -96,7 +118,7 @@ const JoinSection = () => {
                                 target="_blank"
                                 className="w-full text-center py-4 rounded-xl font-bold text-[#06294A] border-2 border-[#06294A] hover:bg-[#06294A] hover:text-white transition-all duration-300"
                             >
-                                Register Company
+                                {t("joinSection.companyButton")}
                             </Link>
                         </div>
                     </div>

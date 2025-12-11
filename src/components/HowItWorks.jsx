@@ -1,27 +1,35 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const HowItWorks = () => {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
+
   const steps = [
     {
       number: "1",
-      description: "Enter your destination to instantly view available rides, upfront pricing, and estimated arrival times.",
-      action: "Request.",
+      description: t("howItWorks.step1.description"),
+      action: t("howItWorks.step1.action"),
     },
     {
       number: "2",
-      description: "Get matched with a nearby, background-checked driver. View their profile, vehicle details, and rating.",
-      action: "Match.",
+      description: t("howItWorks.step2.description"),
+      action: t("howItWorks.step2.action"),
     },
     {
       number: "3",
-      description: "Watch your driver arrive in real-time. Hop in and enjoy a safe, comfortable journey to your destination.",
-      action: "Ride.",
+      description: t("howItWorks.step3.description"),
+      action: t("howItWorks.step3.action"),
     },
     {
       number: "4",
-      description: "Arrive safely and pay seamlessly. Rate your experience to help us maintain our high community standards.",
-      action: "Arrive.",
+      description: t("howItWorks.step4.description"),
+      action: t("howItWorks.step4.action"),
     },
   ];
 
@@ -30,13 +38,10 @@ const HowItWorks = () => {
       <div className="container">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-[55px] font-semibold mb-4">
-            How It <span className="text-focus font-bold">Works!</span>
+            {t("howItWorks.title")} <span className="text-focus font-bold">{t("howItWorks.titleHighlight")}</span>
           </h2>
           <p className="text-base md:text-[22px] text-black max-w-[664px] mx-auto">
-            Our <strong>platform</strong> brings together riders and drivers
-            seamlessly – helping you <strong>book faster</strong>,{" "}
-            <strong>travel safer</strong>, and reach your destination{" "}
-            <strong>with ease and convenience.</strong>
+            {t("howItWorks.description")}
           </p>
         </div>
 
@@ -99,4 +104,3 @@ const HowItWorks = () => {
 };
 
 export default HowItWorks;
-

@@ -1,45 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(1); // Start with item 02 open
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
+  const [openIndex, setOpenIndex] = useState(1);
 
   const faqs = [
     {
       id: 0,
       number: "01",
-      question: "How do I book a ride?",
-      answer:
-        "It's simple. Open the Bourter app, enter your destination, and tap 'Request Ride'. You'll instantly see upfront pricing and be matched with the nearest available driver.",
+      question: t("faq.question1"),
+      answer: t("faq.answer1"),
     },
     {
       id: 1,
       number: "02",
-      question: "What makes Bourter different?",
-      answer:
-        "Bourter prioritizes safety, transparency, and fairness. We rigorously vet our drivers, offer real-time tracking for every trip, and ensure competitive pricing for riders while providing better earnings for drivers.",
+      question: t("faq.question2"),
+      answer: t("faq.answer2"),
     },
     {
       id: 2,
       number: "03",
-      question: "Is the app free to download?",
-      answer:
-        "Absolutely. The Bourter app is 100% free to download on both iOS and Android. You only pay for the rides you take, with no hidden subscription fees.",
+      question: t("faq.question3"),
+      answer: t("faq.answer3"),
     },
     {
       id: 3,
       number: "04",
-      question: "How do I sign up as a driver?",
-      answer:
-        "Click 'Join as Driver' in the menu or download our Driver App. Fill in your details, upload your documents, and once verified, you can start accepting rides and earning immediately.",
+      question: t("faq.question4"),
+      answer: t("faq.answer4"),
     },
     {
       id: 4,
       number: "05",
-      question: "What is the Company Panel?",
-      answer:
-        "The Company Panel is a powerful tool for fleet owners. It allows you to register your company, manage multiple drivers and vehicles, track daily earnings, and optimize your business operations from one dashboard.",
+      question: t("faq.question5"),
+      answer: t("faq.answer5"),
     },
   ];
 
@@ -53,13 +54,10 @@ const FAQ = () => {
         {/* Heading */}
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-[55px] font-semibold mb-4">
-            <span className="text-focus font-bold">Frequently</span> Asked Questions!
+            <span className="text-focus font-bold">{t("faq.title")}</span> {t("faq.titleHighlight")}
           </h2>
           <p className="text-base md:text-[22px] text-black max-w-[824px] mx-auto">
-            Find <strong>clear answers</strong> to the{" "}
-            <strong>most common questions</strong> about booking rides,
-            becoming a driver, or joining as a company on the{" "}
-            <strong>Bourter platform</strong>.
+            {t("faq.description")}
           </p>
         </div>
 
@@ -155,4 +153,3 @@ const FAQ = () => {
 };
 
 export default FAQ;
-

@@ -8,11 +8,19 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function HeroSection() {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
+
   return (
-    <section className="relative h-screen sm:h-[130vh] w-full overflow-hidden">
-      <header className="absolute top-0 left-0 right-0 z-20 h-24 flex items-center justify-between backdrop-blur-[20px] border border-b-[#E9EBEC1A]">
+    <section className="relative h-screen sm:h-[110vh] w-full overflow-hidden">
+      <header className="absolute top-0 left-0 right-0 z-20 h-[90px] sm:h-24 flex items-center justify-between backdrop-blur-[20px] border border-b-[#E9EBEC1A]">
         <div className="container flex items-center justify-between ">
           <Link href="/" className="flex">
             <Image
@@ -35,7 +43,7 @@ export default function HeroSection() {
                   "2px 2px 2px 0px #FFFFFF33 inset, -2px -2px 2px 0px #FFFFFF33 inset",
               }}
             >
-              Join as Driver
+              {t("navigation.joinDriver")}
             </Link>
             <Link
               target="_blank"
@@ -48,13 +56,15 @@ export default function HeroSection() {
                   "2px 2px 2px 0px #FFFFFF33 inset, -2px -2px 2px 0px #FFFFFF33 inset",
               }}
             >
-              Join as Company
+              {t("navigation.joinCompany")}
             </Link>
+            <LanguageSwitcher />
           </div>
         </div>
       </header>
 
       <Swiper
+        key={locale} // Force re-render when language changes
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
@@ -69,108 +79,43 @@ export default function HeroSection() {
             return `<span class="${className} hero-pagination-bullet"></span>`;
           },
         }}
-        className="h-full w-full pt-40 sm:pt-36 sm:pb-[46px]"
+        className="h-full w-full pt-48 sm:pt-36 sm:pb-[46px]"
       >
         <SwiperSlide>
           <div className="relative h-full w-full">
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/images/hero-slide-1.png"
-                alt="Hero slide 1"
-                width={1000}
-                height={1000}
-                className="object-cover w-full h-full"
-              />
-            </div>
-
-            <div className="relative z-10 flex h-full flex-col justify-center">
-              <div className="container flex flex-1 items-center">
-                <div className="max-w-2xl">
-                  <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-[56px] text-white">
-                    <span>
-                      Your Ride,{" "}
-                      <span className="text-primary font-black">
-                        {" "}
-                        Your Way{" "}
-                      </span>{" "}
-                      Book Instantly,{" "}
-                      <span className="text-primary font-black"> Travel Safely! </span>
-                    </span>
-                  </h1>
-
-                  {/* Description */}
-                  <p className="mb-8 text-2xl text-white max-w-[664px]">
-                    Connect with <strong>verified drivers</strong>, book rides{" "}
-                    <strong>instantly</strong>, and enjoy safe, convenient{" "}
-                    <strong>transportation</strong> wherever you need to go.
-                  </p>
-
-                  {/* App Download Buttons */}
-                  <div className="flex items-center gap-6 w-full">
-                    <Link href="#">
-                      <Image
-                        src="/images/btn.svg"
-                        alt="app Store"
-                        width={200}
-                        height={50}
-                        className="object-contain w-full max-w-[261px] h-20"
-                      />
-                    </Link>
-                    <Link
-                      target="_blank"
-                      href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide"
-                    >
-                      <Image
-                        src="/images/btn (1).svg"
-                        alt="play Store"
-                        width={200}
-                        height={50}
-                        className="object-contain w-full max-w-[261px] h-20"
-                      />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="relative h-full w-full">
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <Image
-                src="/images/hero-slide-2.png"
+                src="/images/heroimg/8.png"
                 alt="Hero slide 2"
                 width={1000}
                 height={1000}
                 className="object-cover w-full h-full"
               />
+              <div className="absolute inset-0 bg-[#06294A] opacity-60"></div>
             </div>
 
             <div className="relative z-10 flex h-full flex-col justify-center">
               <div className="container flex flex-1 items-center">
-                <div className="max-w-2xl">
+                <div className="max-w-4xl">
                   <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-[56px] text-white">
                     <span>
-                      Fast, Safe, and
-                      <span className="text-primary font-black">
+                      {t("hero.slide1.title")}
+                      <span className="text-[#E57F1D] font-black">
                         {" "}
-                        Reliable
+                        {t("hero.slide1.titleHighlight1")}
                       </span>{" "}
-                      Rides at Your
-                      <span className="text-primary font-black">
+                      {t("hero.slide1.subtitle")}
+                      <span className="text-[#E57F1D] font-black">
                         {" "}
-                        Fingertips!
+                        {t("hero.slide1.titleHighlight2")}
                       </span>
                     </span>
                   </h1>
 
                   {/* Description */}
-                  <p className="mb-8 text-2xl text-white max-w-[664px]">
-                    Get <strong>instant ride matches</strong> with verified drivers,{" "}
-                    track your ride in <strong>real-time</strong>, and enjoy{" "}
-                    <strong>seamless payment</strong> options for a hassle-free journey.
+                  <p className="mb-8 text-base sm:text-lg md:text-2xl text-white max-w-[664px]">
+                    {t("hero.slide1.description")}
                   </p>
 
                   {/* App Download Buttons */}
@@ -207,34 +152,96 @@ export default function HeroSection() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <Image
-                src="/images/hero-slide-3.png"
+                src="/images/heroimg/2.png"
+                alt="Hero slide 1"
+                width={1000}
+                height={1000}
+                className="object-cover w-full h-full"
+              />
+              <div className="absolute inset-0 bg-[#06294A] opacity-60"></div>
+            </div>
+
+            <div className="relative z-10 flex h-full flex-col justify-center">
+              <div className="container flex flex-1 items-center">
+                <div className="max-w-4xl">
+                  <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-[56px] text-white">
+                    <span>
+                      {t("hero.slide2.title")}{" "}
+                      <span className="text-[#E57F1D] font-black">
+                        {" "}
+                        {t("hero.slide2.titleHighlight1")}{" "}
+                      </span>{" "}
+                      {t("hero.slide2.subtitle")}{" "}
+                      <span className="text-[#E57F1D] font-black">{t("hero.slide2.titleHighlight2")} </span>
+                    </span>
+                  </h1>
+
+                  {/* Description */}
+                  <p className="mb-8 text-base sm:text-lg md:text-2xl text-white max-w-[664px]">
+                    {t("hero.slide2.description")}
+                  </p>
+
+                  {/* App Download Buttons */}
+                  <div className="flex items-center gap-6 w-full">
+                    <Link href="#">
+                      <Image
+                        src="/images/btn.svg"
+                        alt="app Store"
+                        width={200}
+                        height={50}
+                        className="object-contain w-full max-w-[261px] h-20"
+                      />
+                    </Link>
+                    <Link
+                      target="_blank"
+                      href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide"
+                    >
+                      <Image
+                        src="/images/btn (1).svg"
+                        alt="play Store"
+                        width={200}
+                        height={50}
+                        className="object-contain w-full max-w-[261px] h-20"
+                      />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className="relative h-full w-full">
+            {/* Background Image */}
+            <div className="absolute inset-0">
+              <Image
+                src="/images/heroimg/1.png"
                 alt="Hero slide 3"
                 width={1000}
                 height={1000}
                 className="object-cover w-full h-full"
               />
+              <div className="absolute inset-0 bg-[#06294A] opacity-60"></div>
             </div>
 
             <div className="relative z-10 flex h-full flex-col justify-center">
               <div className="container flex flex-1 items-center">
-                <div className="max-w-2xl">
+                <div className="max-w-4xl">
                   <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl lg:text-[56px] text-white">
                     <span>
-                      Join Thousands of
-                      <span className="text-primary font-black">
+                      {t("hero.slide3.title")}
+                      <span className="text-[#E57F1D] font-black">
                         {" "}
-                        Drivers
+                        {t("hero.slide3.titleHighlight1")}
                       </span>{" "}
-                      Earning with
-                      <span className="text-primary font-black"> Bourter! </span>
+                      {t("hero.slide3.subtitle")}
+                      <span className="text-[#E57F1D] font-black"> {t("hero.slide3.titleHighlight2")} </span>
                     </span>
                   </h1>
 
                   {/* Description */}
-                  <p className="mb-8 text-2xl text-white max-w-[664px]">
-                    Start earning <strong>flexible income</strong> as a driver or{" "}
-                    <strong>manage your fleet</strong> as a company — all with{" "}
-                    <strong>transparent pricing</strong> and reliable support.
+                  <p className="mb-8 text-base sm:text-lg md:text-2xl text-white max-w-[664px]">
+                    {t("hero.slide3.description")}
                   </p>
 
                   {/* App Download Buttons */}

@@ -1,23 +1,25 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const AllinOne = () => {
-  return (
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
 
+  return (
     <div className="container flex items-center justify-between gap-12 my-[30px] md:my-[60px]">
       <div className="w-full lg:w-[60%]">
         <h2 className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-          Your All-In-One <span className="text-primary">Ride-Sharing</span>{" "}
-          Platform!
+          {t("allInOne.title")} <span className="text-primary">{t("allInOne.titleHighlight")}</span>{" "}
         </h2>
 
-        <p className="mb-6 text-lg text-black md:text-xl">
-          Book rides, connect with drivers, and travel with confidence.
-        </p>
-
         <p className="mb-8 text-base leading-relaxed text-black md:text-lg">
-          Experience the future of transportation with Bourter. We connect you with top-rated drivers instantly, offering a seamless blend of comfort, reliability, and advanced technology. From precision tracking to effortless payments, elevate your daily travel experience.
+          {t("allInOne.description")}
         </p>
 
         <div className="flex items-center gap-6 w-full">

@@ -1,8 +1,15 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const WhyChooseUs = () => {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
+
   return (
     <section className="bg-white py-12 md:py-20">
       <div className="container">
@@ -11,12 +18,10 @@ const WhyChooseUs = () => {
           {/* Heading */}
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-[55px] font-semibold mb-4">
-              Why Choose <span className="text-focus font-bold">Us!</span>
+              {t("whyChooseUs.title")} <span className="text-focus font-bold">{t("whyChooseUs.titleHighlight")}</span>
             </h2>
             <p className="text-base md:text-[22px] text-black max-w-2xl mx-auto">
-              A <strong> trusted platform </strong> built to make{" "}
-              <strong> every ride </strong> safe, convenient,{" "}
-              <strong> and reliable. </strong>
+              {t("whyChooseUs.description")}
             </p>
           </div>
 
@@ -58,11 +63,10 @@ const WhyChooseUs = () => {
                 </svg>
               </div>
               <h3 className="text-xl md:text-[28px] font-semibold text-black mb-3">
-                Verified Drivers & Vehicles
+                {t("whyChooseUs.reason1Title")}
               </h3>
               <p className="text-sm md:text-lg text-black">
-                Every driver on our platform is verified, background-checked, and
-                rated – giving you peace of mind while traveling safely.
+                {t("whyChooseUs.reason1Desc")}
               </p>
             </div>
             <div className="w-full md:w-[45%] bg-primary/10 rounded-[40px] border-2 border-primary/30 p-4 md:p-7 shadow-sm hover:shadow-md transition-shadow">
@@ -105,11 +109,10 @@ const WhyChooseUs = () => {
                 </svg>
               </div>
               <h3 className="text-xl md:text-[28px] font-semibold text-black mb-3">
-                All-in-One Ride Platform
+                {t("whyChooseUs.reason2Title")}
               </h3>
               <p className="text-sm md:text-lg text-black">
-                From booking rides to tracking in real-time, secure payments, and
-                managing your ride history.
+                {t("whyChooseUs.reason2Desc")}
               </p>
             </div>
           </div>
@@ -140,11 +143,10 @@ const WhyChooseUs = () => {
                 </svg>
               </div>
               <h3 className="text-xl md:text-[28px] font-semibold text-black mb-3">
-                Safety Features, Always Active
+                {t("whyChooseUs.reason3Title")}
               </h3>
               <p className="text-sm md:text-lg text-black">
-                Access emergency assistance, share ride details with contacts,
-                and enjoy 24/7 support — anytime, anywhere.
+                {t("whyChooseUs.reason3Desc")}
               </p>
             </div>
             <div className="w-full md:w-[56%] bg-primary/10 rounded-[40px] border-2 border-primary/30 p-4 md:p-7 shadow-sm hover:shadow-md transition-shadow">
@@ -207,11 +209,10 @@ const WhyChooseUs = () => {
                 </svg>
               </div>
               <h3 className="text-xl md:text-[28px] font-semibold text-black mb-3">
-                Innovation Meets Reliability
+                {t("whyChooseUs.reason4Title")}
               </h3>
               <p className="text-sm md:text-lg text-black">
-                We combine cutting-edge technology with trusted service to ensure
-                your ride is both convenient and completely hassle-free.
+                {t("whyChooseUs.reason4Desc")}
               </p>
             </div>
           </div>

@@ -1,8 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const DownloadBanner = () => {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
+
   return (
     <section className="py-12 md:py-20">
       <div className="container">
@@ -33,21 +41,16 @@ const DownloadBanner = () => {
           <div className="relative z-9999 flex flex-col items-center text-center">
             {/* Headline */}
             <h2 className="text-3xl md:text-4xl lg:text-[49px] font-medium text-white mb-4 md:mb-6">
-              Start Your Journey{" "}
+              {t("downloadBanner.title")}{" "}
               <span className="font-bold text-focus">
                 {" "}
-                With Bourter{" "}
+                {t("downloadBanner.titleHighlight")}{" "}
               </span>{" "}
-              — One Ride{" "}
-              <span className="font-bold text-focus"> at a Time. </span>
             </h2>
 
             {/* Sub-headline */}
             <p className="text-base md:text-xl text-white mb-6 max-w-2xl opacity-90">
-              <strong> Don't just travel </strong> — experience{" "}
-              <strong> convenient, safe rides </strong> with verified
-              <strong> drivers </strong> and{" "}
-              <strong> reliable service </strong> built around you.
+              {t("downloadBanner.description")}
             </p>
 
             {/* App Download Buttons */}
