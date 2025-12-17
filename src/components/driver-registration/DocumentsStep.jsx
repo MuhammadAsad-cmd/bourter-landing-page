@@ -1,22 +1,107 @@
-import Link from "next/link";
+"use client";
 
-const FileUploadField = ({ label, name, value, accept, onChange }) => {
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
+
+  // Create preview URL when value changes
+  useEffect(() => {
+    if (value && value instanceof File) {
+      const url = URL.createObjectURL(value);
+      setPreview(url);
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setPreview(null);
+    }
+  }, [value]);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsLoading(true);
+      // Simulate upload delay for better UX
+      setTimeout(() => {
+        setIsLoading(false);
+        onChange(e);
+      }, 300);
+    }
+  };
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    if (preview) {
+      URL.revokeObjectURL(preview);
+      setPreview(null);
+    }
+    if (onDelete) {
+      onDelete(name);
+    }
+  };
+
+  const isImage = value && value.type && value.type.startsWith('image/');
+
   return (
     <div className="group">
       <label className="block text-sm font-bold text-gray-700 mb-2 group-hover:text-primary transition-colors">
         {label}
       </label>
-      <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-[32px] cursor-pointer hover:border-primary bg-gray-50 hover:bg-white transition-all duration-300 group-hover:shadow-md relative overflow-hidden">
+      <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-[32px] cursor-pointer hover:border-primary bg-gray-50 hover:bg-white transition-all duration-300 group-hover:shadow-md relative overflow-hidden">
+        
+        {/* Image Preview */}
+        {preview && isImage && !isLoading && (
+          <>
+            <Image
+              width={100}
+              height={100}
+              src={preview}
+              alt={label}
+              className="w-full h-full object-cover rounded-[32px]"
+            />
+            {/* Delete Button */}
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="absolute top-3 right-3 z-100 cursor-pointer w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110"
+              title="Delete image"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            {/* Overlay on hover */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-[32px] z-10">
+              <div className="text-white text-sm font-semibold">Click to change</div>
+            </div>
+          </>
+        )}
 
-        {value ? (
-          <div className="flex flex-col items-center justify-center pt-5 pb-6 text-primary z-10">
-            <svg className="w-10 h-10 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        {/* Loading State */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-gray-100/90 flex flex-col items-center justify-center rounded-[32px] z-20">
+            <svg className="animate-spin h-8 w-8 text-primary mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p className="font-semibold text-sm max-w-[200px] truncate px-4">{value.name}</p>
-            <p className="text-xs mt-1 text-gray-500">Click to change</p>
+            <p className="text-sm text-gray-600 font-medium">Uploading...</p>
           </div>
-        ) : (
+        )}
+
+        {/* Empty State */}
+        {!preview && !isLoading && (
           <div className="flex flex-col items-center justify-center pt-5 pb-6 text-gray-400 group-hover:text-primary transition-colors z-10">
             <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-3">
               <svg
@@ -42,6 +127,38 @@ const FileUploadField = ({ label, name, value, accept, onChange }) => {
           </div>
         )}
 
+        {/* PDF or other file type indicator */}
+        {value && !isImage && !isLoading && (
+          <div className="flex flex-col items-center justify-center pt-5 pb-6 text-primary z-10">
+            <svg className="w-10 h-10 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p className="font-semibold text-sm max-w-[200px] truncate px-4">{value.name}</p>
+            <p className="text-xs mt-1 text-gray-500">Click to change</p>
+            {/* Delete Button for PDF */}
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="mt-2 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110"
+              title="Delete file"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
+
         {/* Hover Effect Background */}
         <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
@@ -49,7 +166,7 @@ const FileUploadField = ({ label, name, value, accept, onChange }) => {
           type="file"
           name={name}
           accept={accept}
-          onChange={onChange}
+          onChange={handleFileChange}
           className="hidden"
         />
       </label>
@@ -57,7 +174,14 @@ const FileUploadField = ({ label, name, value, accept, onChange }) => {
   );
 };
 
-const DocumentsStep = ({ formData, handleInputChange }) => {
+const DocumentsStep = ({ formData, handleInputChange, setFormData }) => {
+  const handleDelete = (fieldName) => {
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: null,
+    }));
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="grid md:grid-cols-2 gap-6">
@@ -67,6 +191,7 @@ const DocumentsStep = ({ formData, handleInputChange }) => {
           value={formData.idCard}
           accept="image/*,.pdf"
           onChange={handleInputChange}
+          onDelete={handleDelete}
         />
 
         <FileUploadField
@@ -75,6 +200,7 @@ const DocumentsStep = ({ formData, handleInputChange }) => {
           value={formData.drivingLicense}
           accept="image/*,.pdf"
           onChange={handleInputChange}
+          onDelete={handleDelete}
         />
 
         <FileUploadField
@@ -83,6 +209,7 @@ const DocumentsStep = ({ formData, handleInputChange }) => {
           value={formData.vehicleRegistration}
           accept="image/*,.pdf"
           onChange={handleInputChange}
+          onDelete={handleDelete}
         />
 
         <FileUploadField
@@ -91,6 +218,7 @@ const DocumentsStep = ({ formData, handleInputChange }) => {
           value={formData.vehicleImage}
           accept="image/*"
           onChange={handleInputChange}
+          onDelete={handleDelete}
         />
       </div>
 

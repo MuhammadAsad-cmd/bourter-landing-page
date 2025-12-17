@@ -24,11 +24,11 @@ export default function HeroSection() {
         <div className="container flex items-center justify-between ">
           <Link href="/" className="flex">
             <Image
-              src="/images/logo.svg"
+              src={locale === "en" ? "/images/logo_eng.png" : "/images/logo_arb_light.png"}
               alt="Bourter Logo"
-              width={250}
+              width={150}
               height={100}
-              className="object-contain h-full w-[180px] sm:w-[250px]"
+              className="object-contain w-full h-full"
               priority
             />
           </Link>
