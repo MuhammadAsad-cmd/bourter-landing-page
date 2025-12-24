@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const PlanSelectionStep = ({ formData, setFormData }) => {
+const PlanSelectionStep = ({ formData, setFormData, userId }) => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [subscribing, setSubscribing] = useState(null); // Track which plan is being subscribed to
 
   useEffect(() => {
     fetchPlans();
@@ -46,14 +47,45 @@ const PlanSelectionStep = ({ formData, setFormData }) => {
     }).format(amount);
   };
 
-  const handlePlanSelect = (plan) => {
-    setFormData({ ...formData, selectedPlan: plan._id, selectedPlanData: plan });
-  };
+  const handleSubscribe = async (plan) => {
+    if (!userId) {
+      setError("User ID not found. Please login first.");
+      return;
+    }
 
-  const handlePlanLink = (plan) => {
-    // You can customize this to navigate to a payment page or handle plan subscription
-    // For now, it will just select the plan
-    handlePlanSelect(plan);
+    setSubscribing(plan._id);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/rider/subscribe`,
+        {
+          userId: userId,
+          packageId: plan._id,
+        }
+      );
+
+      if (response.data.result || response.data.success) {
+        // Get payment URL from response
+        const paymentUrl = response.data.payment_url || response.data.data?.payment_url || response.data.paymentUrl || response.data.data?.paymentUrl;
+        
+        if (paymentUrl) {
+          // Redirect to payment URL
+          window.location.href = paymentUrl;
+        } else {
+          setError("Payment URL not found in response. Please try again.");
+          setSubscribing(null);
+        }
+      } else {
+        setError(response.data.message || "Failed to subscribe. Please try again.");
+        setSubscribing(null);
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Failed to subscribe. Please try again."
+      );
+      setSubscribing(null);
+    }
   };
 
   return (
@@ -118,25 +150,12 @@ const PlanSelectionStep = ({ formData, setFormData }) => {
         <div className="grid md:grid-cols-2 gap-6">
           {filteredPlans.length > 0 ? (
             filteredPlans.map((plan) => {
-              const isSelected = formData.selectedPlan === plan._id;
+              const isSubscribing = subscribing === plan._id;
               return (
                 <div
                   key={plan._id}
-                  className={`relative border-2 rounded-[24px] p-6 lg:p-8 cursor-pointer transition-all duration-300 flex flex-col h-full ${isSelected
-                      ? "border-primary bg-primary/5 shadow-xl scale-[1.02] z-10"
-                      : "border-gray-100 bg-white hover:border-primary/30 hover:shadow-lg"
-                    }`}
-                  onClick={() => handlePlanSelect(plan)}
+                  className="relative border-2 rounded-[24px] p-6 lg:p-8 transition-all duration-300 flex flex-col h-full border-gray-100 bg-white hover:border-primary/30 hover:shadow-lg"
                 >
-                  {isSelected && (
-                    <div className="absolute top-0 right-0 p-4">
-                      <div className="bg-primary text-white p-1 rounded-full">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </div>
-                  )}
 
                   <div className="mb-6">
                     <div className="w-14 h-14 bg-blue-100 text-primary rounded-2xl flex items-center justify-center mb-4">
@@ -224,33 +243,26 @@ const PlanSelectionStep = ({ formData, setFormData }) => {
 
                   <button
                     type="button"
-                    className={`w-full py-4 rounded-xl font-bold transition-all duration-300 mb-3 ${isSelected
-                        ? "bg-primary text-white shadow-lg shadow-primary/30"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlanSelect(plan);
-                    }}
+                    disabled={isSubscribing || !userId}
+                    onClick={() => handleSubscribe(plan)}
+                    className={`w-full py-4 rounded-xl font-bold cursor-pointer transition-all duration-300 ${
+                      isSubscribing
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : "bg-primary text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:scale-[1.02]"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
-                    {isSelected ? "Plan Selected" : "Select Plan"}
+                    {isSubscribing ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                      </span>
+                    ) : (
+                      "Subscribe"
+                    )}
                   </button>
-
-                  {/* Link Button */}
-                  <a
-                    href={`/package/${plan._id}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlanLink(plan);
-                    }}
-                    className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 text-center block border-2 ${
-                      isSelected
-                        ? "border-primary text-primary hover:bg-primary/5"
-                        : "border-gray-200 text-gray-600 hover:border-primary hover:text-primary"
-                    }`}
-                  >
-                    View Details →
-                  </a>
                 </div>
               );
             })

@@ -1,6 +1,6 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/lib/i18n/language-context";
+import MainLayout from "@/components/layouts/Mainlayout";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -9,15 +9,24 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Global Zair Guide",
-  description: "Spiritual journeys to Makkah, Madinah, and Iraq's holy shrines",
+  title: "Bourter - Your Reliable Ride-Sharing App",
+  description:
+    "Book rides with trusted drivers. Join as a driver or company. Fast, safe, and convenient transportation at your fingertips.",
+  images: [
+    {
+      url: "/images/logo_eng.png",
+      width: 267,
+      height: 100,
+      alt: "Bourter Logo",
+    },
+  ],
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <LanguageProvider>{children}</LanguageProvider>
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );

@@ -12,8 +12,6 @@ import PlanSelectionStep from "./driver-registration/PlanSelectionStep";
 import SuccessModal from "./driver-registration/SuccessModal";
 import FormNavigation from "./driver-registration/FormNavigation";
 
-// API Base URL - can be set via environment variable
-
 const DriverRegistrationForm = () => {
   const [showLogin, setShowLogin] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
@@ -38,6 +36,12 @@ const DriverRegistrationForm = () => {
     password: "",
     confirmPassword: "",
     profilePicture: null,
+    country: "",
+    city: "",
+    location: {
+      lat: "",
+      long: "",
+    },
 
     // Vehicle Information
     vehicleType: "",
@@ -97,6 +101,12 @@ const DriverRegistrationForm = () => {
       phone: user.phone || "",
       email: user.email || "",
       address: user.address || "",
+      country: user.country || "",
+      city: user.city || "",
+      location: {
+        lat: user.location?.lat || "",
+        long: user.location?.long || "",
+      },
       vehicleType: user.vehicleType || "",
       vehicleModel: user.vehicleModel || "",
       vehicleNumber: user.vehicleNumber || "",
@@ -205,18 +215,26 @@ const DriverRegistrationForm = () => {
       formDataToSend.append("phone", formData.phone);
       formDataToSend.append("address", formData.address);
       formDataToSend.append("password", formData.password);
+      if (formData.country) {
+        formDataToSend.append("country", formData.country);
+      }
+      if (formData.city) {
+        formDataToSend.append("city", formData.city);
+      }
+      if (formData.location?.lat) {
+        formDataToSend.append("location[lat]", formData.location.lat);
+      }
+      if (formData.location?.long) {
+        formDataToSend.append("location[long]", formData.location.long);
+      }
       if (formData.profilePicture) {
         formDataToSend.append("image", formData.profilePicture);
       }
 
+      // DO NOT set Content-Type header manually - axios will set it with the correct boundary
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/rider/register`,
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        formDataToSend
       );
 
       if (response.data.result || response.data.success) {
@@ -275,20 +293,39 @@ const DriverRegistrationForm = () => {
       }
 
       // Documents (always include when submitting from documents step)
-      if (formData.idCard) {
-        formDataToSend.append("idCardImage", formData.idCard);
+      // Append files if they exist - ensure they are File objects with proper filenames
+      if (formData.idCard && formData.idCard instanceof File) {
+        formDataToSend.append("idCardImage", formData.idCard, formData.idCard.name || "idCard.jpg");
         hasData = true;
       }
-      if (formData.drivingLicense) {
-        formDataToSend.append("licenseImage", formData.drivingLicense);
+      if (formData.drivingLicense && formData.drivingLicense instanceof File) {
+        formDataToSend.append("licenseImage", formData.drivingLicense, formData.drivingLicense.name || "license.jpg");
         hasData = true;
       }
-      if (formData.vehicleImage) {
-        formDataToSend.append("vehicleImage", formData.vehicleImage);
+      if (formData.vehicleImage && formData.vehicleImage instanceof File) {
+        formDataToSend.append("vehicleImage", formData.vehicleImage, formData.vehicleImage.name || "vehicle.jpg");
         hasData = true;
       }
-      if (formData.vehicleRegistration) {
-        formDataToSend.append("vehicleCardImage", formData.vehicleRegistration);
+      if (formData.vehicleRegistration && formData.vehicleRegistration instanceof File) {
+        formDataToSend.append("vehicleCardImage", formData.vehicleRegistration, formData.vehicleRegistration.name || "vehicleCard.jpg");
+        hasData = true;
+      }
+
+      // Include city, country, and location if available
+      if (formData.city) {
+        formDataToSend.append("city", formData.city);
+        hasData = true;
+      }
+      if (formData.country) {
+        formDataToSend.append("country", formData.country);
+        hasData = true;
+      }
+      if (formData.location?.lat) {
+        formDataToSend.append("location[lat]", formData.location.lat);
+        hasData = true;
+      }
+      if (formData.location?.long) {
+        formDataToSend.append("location[long]", formData.location.long);
         hasData = true;
       }
 
@@ -300,14 +337,17 @@ const DriverRegistrationForm = () => {
         return;
       }
 
+      // DO NOT set Content-Type header manually - axios will set it with the correct boundary
+      // Use transformRequest to ensure FormData is sent correctly
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/rider/details/${userId}`,
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             ...(token && { Authorization: `Bearer ${token}` }),
           },
+          // Prevent axios from transforming FormData
+          transformRequest: [(data) => data],
         }
       );
 
@@ -363,6 +403,7 @@ const DriverRegistrationForm = () => {
             setShowPassword={setShowPassword}
             showConfirmPassword={showConfirmPassword}
             setShowConfirmPassword={setShowConfirmPassword}
+            setFormData={setFormData}
           />
         );
       case 2:
@@ -382,7 +423,11 @@ const DriverRegistrationForm = () => {
         );
       case 4:
         return (
-          <PlanSelectionStep formData={formData} setFormData={setFormData} />
+          <PlanSelectionStep 
+            formData={formData} 
+            setFormData={setFormData}
+            userId={userId}
+          />
         );
       default:
         return null;

@@ -36,7 +36,7 @@ const Footer = () => {
           <div className="flex flex-col">
             <div className="mb-6 flex">
               <Image
-                src="/images/logo2.svg"
+                src={locale === "en" ? "/images/logo_eng.png" : "/images/logo_arb_light.png"}
                 alt="Bourter Logo"
                 width={200}
                 height={100}

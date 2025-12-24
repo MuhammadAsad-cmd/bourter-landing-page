@@ -1,4 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { Country, City } from "country-state-city";
+import { Map, Marker } from "@vis.gl/react-google-maps";
 
 const PersonalInfoStep = ({
   formData,
@@ -7,7 +11,163 @@ const PersonalInfoStep = ({
   setShowPassword,
   showConfirmPassword,
   setShowConfirmPassword,
+  setFormData,
 }) => {
+  const [countries] = useState(Country.getAllCountries());
+  const [cities, setCities] = useState([]);
+  const [selectedCountryCode, setSelectedCountryCode] = useState(
+    formData.country || ""
+  );
+  const [selectedCity, setSelectedCity] = useState(formData.city || "");
+  const [locationSearch, setLocationSearch] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(() => {
+    const lat = formData.location?.lat;
+    const lng = formData.location?.long;
+    return {
+      lat: lat ? parseFloat(lat) : null,
+      lng: lng ? parseFloat(lng) : null,
+    };
+  });
+  const autocompleteRef = useRef(null);
+  const inputRef = useRef(null);
+  const autocompleteInstanceRef = useRef(null);
+
+  // Handle location selection from autocomplete
+  const handlePlaceSelect = (place) => {
+    if (place.geometry && place.geometry.location) {
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      setSelectedLocation({ lat, lng });
+      setLocationSearch(place.formatted_address || "");
+      setFormData((prev) => ({
+        ...prev,
+        location: {
+          lat: lat.toString(),
+          long: lng.toString(),
+        },
+      }));
+    }
+  };
+
+  // Initialize Google Maps Places Autocomplete
+  useEffect(() => {
+    const initAutocomplete = () => {
+      if (
+        typeof window !== "undefined" &&
+        window.google &&
+        window.google.maps &&
+        window.google.maps.places &&
+        inputRef.current &&
+        !autocompleteInstanceRef.current
+      ) {
+        autocompleteInstanceRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+          types: ["geocode"],
+          fields: ["geometry", "formatted_address"],
+        });
+
+        autocompleteInstanceRef.current.addListener("place_changed", () => {
+          const place = autocompleteInstanceRef.current.getPlace();
+          handlePlaceSelect(place);
+        });
+      }
+    };
+
+    // Wait for Google Maps and Places library to be available
+    const checkInterval = setInterval(() => {
+      if (
+        typeof window !== "undefined" &&
+        window.google &&
+        window.google.maps &&
+        window.google.maps.places
+      ) {
+        initAutocomplete();
+        clearInterval(checkInterval);
+      }
+    }, 100);
+
+    // Cleanup after 10 seconds if still not loaded
+    const timeout = setTimeout(() => {
+      clearInterval(checkInterval);
+    }, 10000);
+
+    return () => {
+      clearInterval(checkInterval);
+      clearTimeout(timeout);
+      if (autocompleteInstanceRef.current) {
+        window.google?.maps?.event?.clearInstanceListeners?.(autocompleteInstanceRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sync location state with formData
+  useEffect(() => {
+    if (formData.location?.lat && formData.location?.long) {
+      const lat = parseFloat(formData.location.lat);
+      const lng = parseFloat(formData.location.long);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        setSelectedLocation({ lat, lng });
+      }
+    }
+  }, [formData.location?.lat, formData.location?.long]);
+
+  // Update cities when country changes
+  useEffect(() => {
+    if (selectedCountryCode) {
+      const countryCities = City.getCitiesOfCountry(selectedCountryCode);
+      setCities(countryCities || []);
+      // Reset city when country changes
+      if (formData.country !== selectedCountryCode) {
+        setSelectedCity("");
+        setFormData((prev) => ({
+          ...prev,
+          country: selectedCountryCode,
+          city: "",
+        }));
+      }
+    } else {
+      setCities([]);
+      setSelectedCity("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCountryCode]);
+
+  // Handle country change
+  const handleCountryChange = (e) => {
+    const countryCode = e.target.value;
+    setSelectedCountryCode(countryCode);
+    setFormData((prev) => ({
+      ...prev,
+      country: countryCode,
+      city: "",
+    }));
+  };
+
+  // Handle city change
+  const handleCityChange = (e) => {
+    const cityValue = e.target.value;
+    setSelectedCity(cityValue);
+    setFormData((prev) => ({
+      ...prev,
+      city: cityValue,
+    }));
+  };
+
+  // Handle map click to set location
+  const handleMapClick = (e) => {
+    if (e.detail?.latLng) {
+      const lat = e.detail.latLng.lat;
+      const lng = e.detail.latLng.lng;
+      setSelectedLocation({ lat, lng });
+      setFormData((prev) => ({
+        ...prev,
+        location: {
+          lat: lat.toString(),
+          long: lng.toString(),
+        },
+      }));
+    }
+  };
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       {/* Profile Picture Upload */}
@@ -142,6 +302,116 @@ const PersonalInfoStep = ({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="group">
+          <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
+            Country <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <select
+              name="country"
+              value={selectedCountryCode}
+              onChange={handleCountryChange}
+              className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium hover:border-gray-300 appearance-none cursor-pointer"
+              required
+            >
+              <option value="">Select Country</option>
+              {countries.map((country) => (
+                <option key={country.isoCode} value={country.isoCode}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors duration-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <svg className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+
+        <div className="group">
+          <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
+            City <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <select
+              name="city"
+              value={selectedCity}
+              onChange={handleCityChange}
+              disabled={!selectedCountryCode}
+              className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium hover:border-gray-300 appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              required
+            >
+              <option value="">{selectedCountryCode ? "Select City" : "Select Country First"}</option>
+              {cities.map((city) => (
+                <option key={city.name} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+            <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors duration-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <svg className="w-5 h-5 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="group">
+        <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
+          Location (Select on Map) <span className="text-red-500">*</span>
+        </label>
+        <div className="space-y-3">
+          <div className="relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={locationSearch}
+              onChange={(e) => setLocationSearch(e.target.value)}
+              placeholder="Search for a location..."
+              className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
+            />
+            <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <div className="relative" style={{ height: "350px", width: "100%", borderRadius: "8px", overflow: "hidden" }}>
+            <Map
+              id="location-map"
+              defaultCenter={selectedLocation.lat && selectedLocation.lng ? selectedLocation : { lat: 24.8607, lng: 67.0011 }}
+              defaultZoom={selectedLocation.lat && selectedLocation.lng ? 15 : 10}
+              mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
+              gestureHandling="auto"
+              disableDefaultUI={false}
+              zoomControl={true}
+              mapTypeControl={true}
+              scaleControl={true}
+              streetViewControl={false}
+              rotateControl={false}
+              fullscreenControl={true}
+              onClick={handleMapClick}
+              style={{ height: "100%", width: "100%" }}
+            >
+              {selectedLocation.lat && selectedLocation.lng && (
+                <Marker
+                  position={selectedLocation}
+                  title="Selected Location"
+                />
+              )}
+            </Map>
+          </div>
+          {selectedLocation.lat && selectedLocation.lng && (
+            <p className="text-sm text-gray-600">
+              Selected: Lat {selectedLocation.lat.toFixed(6)}, Lng {selectedLocation.lng.toFixed(6)}
+            </p>
+          )}
         </div>
       </div>
 
