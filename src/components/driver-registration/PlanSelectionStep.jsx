@@ -66,12 +66,13 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
       );
 
       if (response.data.result || response.data.success) {
-        // Get payment URL from response
-        const paymentUrl = response.data.payment_url || response.data.data?.payment_url || response.data.paymentUrl || response.data.data?.paymentUrl;
+        // Get payment URL from response.data.paymentDetails.url
+        const paymentUrl = response.data.data?.paymentDetails?.url;
         
         if (paymentUrl) {
-          // Redirect to payment URL
-          window.location.href = paymentUrl;
+          // Open payment URL in a new tab
+          window.open(paymentUrl, '_blank');
+          setSubscribing(null);
         } else {
           setError("Payment URL not found in response. Please try again.");
           setSubscribing(null);
