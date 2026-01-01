@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Country, City } from "country-state-city";
-import { Map, Marker } from "@vis.gl/react-google-maps";
+import LocationMapPicker from "./LocationMapPicker";
 
 const PersonalInfoStep = ({
   formData,
@@ -28,77 +28,17 @@ const PersonalInfoStep = ({
       lng: lng ? parseFloat(lng) : null,
     };
   });
-  const autocompleteRef = useRef(null);
-  const inputRef = useRef(null);
-  const autocompleteInstanceRef = useRef(null);
-
-  // Handle location selection from autocomplete
-  const handlePlaceSelect = (place) => {
-    if (place.geometry && place.geometry.location) {
-      const lat = place.geometry.location.lat();
-      const lng = place.geometry.location.lng();
-      setSelectedLocation({ lat, lng });
-      setLocationSearch(place.formatted_address || "");
-      setFormData((prev) => ({
-        ...prev,
-        location: {
-          lat: lat.toString(),
-          long: lng.toString(),
-        },
-      }));
-    }
+  // Handle location selection from map picker
+  const handleLocationSelect = (location) => {
+    setSelectedLocation(location);
+    setFormData((prev) => ({
+      ...prev,
+      location: {
+        lat: location.lat.toString(),
+        long: location.lng.toString(),
+      },
+    }));
   };
-
-  // Initialize Google Maps Places Autocomplete
-  useEffect(() => {
-    const initAutocomplete = () => {
-      if (
-        typeof window !== "undefined" &&
-        window.google &&
-        window.google.maps &&
-        window.google.maps.places &&
-        inputRef.current &&
-        !autocompleteInstanceRef.current
-      ) {
-        autocompleteInstanceRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-          types: ["geocode"],
-          fields: ["geometry", "formatted_address"],
-        });
-
-        autocompleteInstanceRef.current.addListener("place_changed", () => {
-          const place = autocompleteInstanceRef.current.getPlace();
-          handlePlaceSelect(place);
-        });
-      }
-    };
-
-    // Wait for Google Maps and Places library to be available
-    const checkInterval = setInterval(() => {
-      if (
-        typeof window !== "undefined" &&
-        window.google &&
-        window.google.maps &&
-        window.google.maps.places
-      ) {
-        initAutocomplete();
-        clearInterval(checkInterval);
-      }
-    }, 100);
-
-    // Cleanup after 10 seconds if still not loaded
-    const timeout = setTimeout(() => {
-      clearInterval(checkInterval);
-    }, 10000);
-
-    return () => {
-      clearInterval(checkInterval);
-      clearTimeout(timeout);
-      if (autocompleteInstanceRef.current) {
-        window.google?.maps?.event?.clearInstanceListeners?.(autocompleteInstanceRef.current);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Sync location state with formData
   useEffect(() => {
@@ -110,6 +50,17 @@ const PersonalInfoStep = ({
       }
     }
   }, [formData.location?.lat, formData.location?.long]);
+
+  // Sync country and city from formData on initial load
+  useEffect(() => {
+    if (formData.country && !selectedCountryCode) {
+      setSelectedCountryCode(formData.country);
+    }
+    if (formData.city && !selectedCity) {
+      setSelectedCity(formData.city);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Update cities when country changes
   useEffect(() => {
@@ -153,21 +104,6 @@ const PersonalInfoStep = ({
     }));
   };
 
-  // Handle map click to set location
-  const handleMapClick = (e) => {
-    if (e.detail?.latLng) {
-      const lat = e.detail.latLng.lat;
-      const lng = e.detail.latLng.lng;
-      setSelectedLocation({ lat, lng });
-      setFormData((prev) => ({
-        ...prev,
-        location: {
-          lat: lat.toString(),
-          long: lng.toString(),
-        },
-      }));
-    }
-  };
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       {/* Profile Picture Upload */}
@@ -176,7 +112,7 @@ const PersonalInfoStep = ({
           <div className="w-28 h-28 rounded-full bg-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-center group-hover:border-primary transition-all duration-300 relative overflow-hidden shadow-sm group-hover:shadow-md">
             {formData.profilePicture ? (
               <img
-                src={URL.createObjectURL(formData.profilePicture)}
+                src={formData.profilePicture instanceof File ? URL.createObjectURL(formData.profilePicture) : formData.profilePicture}
                 alt="Profile"
                 className="w-full h-full object-cover rounded-full"
               />
@@ -368,51 +304,12 @@ const PersonalInfoStep = ({
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
           Location (Select on Map) <span className="text-red-500">*</span>
         </label>
-        <div className="space-y-3">
-          <div className="relative">
-            <input
-              ref={inputRef}
-              type="text"
-              value={locationSearch}
-              onChange={(e) => setLocationSearch(e.target.value)}
-              placeholder="Search for a location..."
-              className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
-            />
-            <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <div className="relative" style={{ height: "350px", width: "100%", borderRadius: "8px", overflow: "hidden" }}>
-            <Map
-              id="location-map"
-              defaultCenter={selectedLocation.lat && selectedLocation.lng ? selectedLocation : { lat: 24.8607, lng: 67.0011 }}
-              defaultZoom={selectedLocation.lat && selectedLocation.lng ? 15 : 10}
-              mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID}
-              gestureHandling="auto"
-              disableDefaultUI={false}
-              zoomControl={true}
-              mapTypeControl={true}
-              scaleControl={true}
-              streetViewControl={false}
-              rotateControl={false}
-              fullscreenControl={true}
-              onClick={handleMapClick}
-              style={{ height: "100%", width: "100%" }}
-            >
-              {selectedLocation.lat && selectedLocation.lng && (
-                <Marker
-                  position={selectedLocation}
-                  title="Selected Location"
-                />
-              )}
-            </Map>
-          </div>
-          {selectedLocation.lat && selectedLocation.lng && (
-            <p className="text-sm text-gray-600">
-              Selected: Lat {selectedLocation.lat.toFixed(6)}, Lng {selectedLocation.lng.toFixed(6)}
-            </p>
-          )}
-        </div>
+        <LocationMapPicker
+          selectedLocation={selectedLocation}
+          onLocationSelect={handleLocationSelect}
+          locationSearch={locationSearch}
+          onLocationSearchChange={setLocationSearch}
+        />
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">

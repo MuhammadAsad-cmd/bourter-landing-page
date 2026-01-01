@@ -73,11 +73,15 @@ const DriverRegistrationForm = () => {
   // Determine which step to show based on user data
   const determineNextStep = (user) => {
     // If user doesn't have basic info, start at step 1
-    if (!user.name || !user.phone || !user.address) {
+    if (!user.name || !user.phone || !user.address || !user.email) {
+      return 1;
+    }
+    // If user doesn't have city, country, or location, start at step 1
+    if (!user.city || !user.country || !user.location?.lat || !user.location?.long) {
       return 1;
     }
     // If user doesn't have vehicle info, start at step 2
-    if (!user.vehicleType || !user.vehicleNumber) {
+    if (!user.vehicleType || !user.vehicleNumber || !user.vehicleModel || !user.vehicleColor) {
       return 2;
     }
     // If user doesn't have documents, start at step 3
@@ -89,14 +93,19 @@ const DriverRegistrationForm = () => {
     ) {
       return 3;
     }
-    // Otherwise, go to plan selection
-    return 4;
+    // If payment is not completed, go to plan selection
+    if (!user.paymentCompleted) {
+      return 4;
+    }
+    // If everything is complete, show step 1 (Personal Information) as default
+    return 1;
   };
 
   // Populate form data from user data
   const populateFormFromUserData = (user) => {
     setFormData((prev) => ({
       ...prev,
+      // Personal Information
       name: user.name || "",
       phone: user.phone || "",
       email: user.email || "",
@@ -104,13 +113,26 @@ const DriverRegistrationForm = () => {
       country: user.country || "",
       city: user.city || "",
       location: {
-        lat: user.location?.lat || "",
-        long: user.location?.long || "",
+        lat: user.location?.lat?.toString() || "",
+        long: user.location?.long?.toString() || "",
       },
+      // Profile picture - store as URL string (will be handled by component)
+      profilePicture: user.image || null,
+      
+      // Vehicle Information
       vehicleType: user.vehicleType || "",
       vehicleModel: user.vehicleModel || "",
       vehicleNumber: user.vehicleNumber || "",
       color: user.vehicleColor || "",
+      
+      // Documents - store as URL strings (will be handled by component)
+      idCard: user.idCardImage || null,
+      drivingLicense: user.licenseImage || null,
+      vehicleImage: user.vehicleImage || null,
+      vehicleRegistration: user.vehicleCardImage || null,
+      
+      // Plan information if available
+      selectedPlan: user.packageDetails?._id || "",
     }));
   };
 
@@ -293,7 +315,47 @@ const DriverRegistrationForm = () => {
       }
 
       // Documents (always include when submitting from documents step)
-      // Append files if they exist - ensure they are File objects with proper filenames
+      // Check if files are File objects (new uploads) or URL strings (already uploaded)
+      const hasNewFiles = 
+        (formData.idCard && formData.idCard instanceof File) ||
+        (formData.drivingLicense && formData.drivingLicense instanceof File) ||
+        (formData.vehicleImage && formData.vehicleImage instanceof File) ||
+        (formData.vehicleRegistration && formData.vehicleRegistration instanceof File);
+
+      const allFilesAreUploaded = 
+        formData.idCard && typeof formData.idCard === 'string' && formData.idCard.startsWith('http') &&
+        formData.drivingLicense && typeof formData.drivingLicense === 'string' && formData.drivingLicense.startsWith('http') &&
+        formData.vehicleImage && typeof formData.vehicleImage === 'string' && formData.vehicleImage.startsWith('http') &&
+        formData.vehicleRegistration && typeof formData.vehicleRegistration === 'string' && formData.vehicleRegistration.startsWith('http');
+
+      // If all files are already uploaded (URLs) and no new files to upload
+      if (allFilesAreUploaded && !hasNewFiles) {
+        // Check if we have other data to update (vehicle info, city, country, location)
+        const hasOtherData = 
+          formData.vehicleType || 
+          formData.vehicleModel || 
+          formData.color || 
+          formData.vehicleNumber ||
+          formData.city ||
+          formData.country ||
+          formData.location?.lat ||
+          formData.location?.long;
+
+        if (!hasOtherData) {
+          // No new data to send, just move to next step
+          setCurrentStep(currentStep + 1);
+          setLoading(false);
+          return;
+        }
+        // If we have other data but no new files, the backend still requires files
+        // So we skip the API call and just move to next step
+        // The data will be saved when user uploads new files or updates other fields
+        setCurrentStep(currentStep + 1);
+        setLoading(false);
+        return;
+      }
+
+      // Only send files if they are File objects (new uploads)
       if (formData.idCard && formData.idCard instanceof File) {
         formDataToSend.append("idCardImage", formData.idCard, formData.idCard.name || "idCard.jpg");
         hasData = true;

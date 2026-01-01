@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,10 +9,18 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
 
   // Create preview URL when value changes
   useEffect(() => {
-    if (value && value instanceof File) {
-      const url = URL.createObjectURL(value);
-      setPreview(url);
-      return () => URL.revokeObjectURL(url);
+    if (value) {
+      if (value instanceof File) {
+        // If it's a File object, create object URL
+        const url = URL.createObjectURL(value);
+        setPreview(url);
+        return () => URL.revokeObjectURL(url);
+      } else if (typeof value === 'string' && value.startsWith('http')) {
+        // If it's a URL string (from API), use it directly
+        setPreview(value);
+      } else {
+        setPreview(null);
+      }
     } else {
       setPreview(null);
     }
@@ -42,7 +49,11 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
     }
   };
 
-  const isImage = value && value.type && value.type.startsWith('image/');
+  // Check if value is an image (File object or URL string)
+  const isImage = value && (
+    (value instanceof File && value.type && value.type.startsWith('image/')) ||
+    (typeof value === 'string' && (value.match(/\.(jpg|jpeg|png|gif|webp)$/i) || value.startsWith('http')))
+  );
 
   return (
     <div className="group">
@@ -54,12 +65,14 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
         {/* Image Preview */}
         {preview && isImage && !isLoading && (
           <>
-            <Image
-              width={100}
-              height={100}
+            <img
               src={preview}
               alt={label}
               className="w-full h-full object-cover rounded-[32px]"
+              onError={(e) => {
+                // Fallback if image fails to load
+                e.target.style.display = 'none';
+              }}
             />
             {/* Delete Button */}
             <button
