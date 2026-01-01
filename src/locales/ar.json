@@ -138,5 +138,147 @@
     "subscribe": "اشترك",
     "copyright": "@2025 بورتر",
     "allRightsReserved": "جميع الحقوق محفوظة"
+  },
+  "driverPage": {
+    "hero": {
+      "recruitingBadge": "نوظف سائقين في منطقتك الآن",
+      "title": "قد مع",
+      "titleHighlight": "بورتر",
+      "description": "كن مدير نفسك. حدد جدولك. اربح أسعاراً تنافسية بالإضافة إلى",
+      "tipsHighlight": "100% من الإكراميات",
+      "startApplication": "ابدأ التقديم",
+      "driversCount": "أكثر من 2000 سائق",
+      "joinedThisMonth": "انضم هذا الشهر"
+    },
+    "features": {
+      "flexibleSchedule": {
+        "title": "جدول مرن",
+        "description": "قد متى تريد، وطالما تريد. أنت في السيطرة الكاملة."
+      },
+      "weeklyPayments": {
+        "title": "مدفوعات أسبوعية",
+        "description": "احصل على أموالك بسرعة مع إيداعات أسبوعية موثوقة مباشرة إلى حسابك المصرفي."
+      },
+      "support": {
+        "title": "دعم على مدار الساعة",
+        "description": "فريق الدعم المخصص لدينا جاهز دائماً لمساعدتك على الطريق."
+      }
+    },
+    "formSection": {
+      "title": "لنبدأ رحلتك على الطريق",
+      "description": "أكمل الخطوات البسيطة أدناه للانضمام إلى أسطولنا المتميز من السائقين."
+    },
+    "form": {
+      "createAccount": "أنشئ",
+      "accountHighlight": "حساب السائق",
+      "joinCommunity": "انضم إلى مجتمعنا من السائقين وابدأ في كسب المال وفقاً لجدولك الخاص.",
+      "steps": {
+        "personalInfo": "المعلومات الشخصية",
+        "vehicleInfo": "معلومات المركبة",
+        "uploadDocuments": "رفع المستندات",
+        "choosePlan": "اختر الخطة"
+      },
+      "login": {
+        "welcomeBack": "مرحباً بعودتك",
+        "loginToContinue": "سجل الدخول لمتابعة التسجيل",
+        "emailAddress": "عنوان البريد الإلكتروني",
+        "emailPlaceholder": "john@example.com",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "أدخل كلمة المرور",
+        "loginButton": "تسجيل الدخول",
+        "loggingIn": "جاري تسجيل الدخول...",
+        "dontHaveAccount": "ليس لديك حساب؟",
+        "registerHere": "سجل هنا"
+      },
+      "personalInfo": {
+        "upload": "رفع",
+        "yourName": "اسمك",
+        "namePlaceholder": "مثال: أحمد محمد",
+        "phoneNumber": "رقم الهاتف",
+        "phonePlaceholder": "+1 (555) 000-0000",
+        "emailAddress": "عنوان البريد الإلكتروني",
+        "emailPlaceholder": "john@example.com",
+        "address": "العنوان",
+        "addressPlaceholder": "العنوان الكامل",
+        "country": "الدولة",
+        "selectCountry": "اختر الدولة",
+        "city": "المدينة",
+        "selectCity": "اختر المدينة",
+        "selectCountryFirst": "اختر الدولة أولاً",
+        "location": "الموقع (اختر على الخريطة)",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "أنشئ كلمة مرور",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "confirmPasswordPlaceholder": "أكد كلمة المرور"
+      },
+      "vehicleInfo": {
+        "vehicleType": "نوع المركبة",
+        "selectType": "اختر النوع",
+        "vehicleModel": "طراز المركبة",
+        "modelPlaceholder": "أدخل سنة الطراز (مثال: 2024)",
+        "vehicleNumber": "رقم المركبة",
+        "numberPlaceholder": "ABC-1234",
+        "vehicleColor": "لون المركبة",
+        "colorPlaceholder": "مثال: أزرق، أخضر، فضي"
+      },
+      "documents": {
+        "idCard": "بطاقة الهوية (الوجه الأمامي والخلفي)",
+        "drivingLicense": "رخصة القيادة",
+        "vehicleRegistration": "تسجيل المركبة",
+        "vehicleImage": "صورة المركبة (واضحة ونظيفة)",
+        "clickToUpload": "انقر للرفع",
+        "dragAndDrop": "أو اسحب وأفلت",
+        "fileTypes": "PDF، JPG، PNG (حد أقصى 5 ميجابايت)",
+        "clickToChange": "انقر للتغيير",
+        "uploading": "جاري الرفع...",
+        "deleteImage": "حذف الصورة",
+        "deleteFile": "حذف الملف",
+        "termsAgreement": "بإرسال المستندات، تؤكد أن جميع المعلومات دقيقة وتوافق على",
+        "termsOfService": "شروط الخدمة",
+        "and": "و",
+        "privacyPolicy": "سياسة الخصوصية",
+        "period": "."
+      },
+      "planSelection": {
+        "title": "اختر",
+        "titleHighlight": "خطة السائق",
+        "description": "اختر أفضل خطة تناسب جدول قيادتك وأهدافك في الكسب.",
+        "monthly": "شهري",
+        "yearly": "سنوي",
+        "save20": "وفر 20%",
+        "perfectFor": "مثالي لـ",
+        "drivers": "سائقين",
+        "month": "شهر",
+        "year": "سنة",
+        "rideHistory": "سجل الرحلات والتقييمات",
+        "accessPayout": "الوصول إلى الدفع والمحفظة",
+        "unlimitedRides": "طلبات رحلات غير محدودة",
+        "inAppSupport": "التنقل والدعم داخل التطبيق",
+        "subscribe": "اشترك",
+        "processing": "جاري المعالجة...",
+        "noPlansAvailable": "لا توجد خطط متاحة لهذه الفترة.",
+        "failedToLoad": "فشل تحميل الخطط. يرجى المحاولة مرة أخرى."
+      },
+      "navigation": {
+        "back": "رجوع",
+        "nextStep": "الخطوة التالية",
+        "submitApplication": "إرسال الطلب",
+        "saving": "جاري الحفظ...",
+        "submitting": "جاري الإرسال..."
+      },
+      "successModal": {
+        "title": "تم التسجيل بنجاح!",
+        "description": "أنت جاهز! لقد سجلت تفاصيلك بنجاح. حان الوقت لاستكشاف التطبيق الآن.",
+        "continue": "متابعة"
+      },
+      "errors": {
+        "loginFailed": "فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد الخاصة بك.",
+        "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
+        "saveFailed": "فشل حفظ التفاصيل. يرجى المحاولة مرة أخرى.",
+        "userIdNotFound": "لم يتم العثور على معرف المستخدم. يرجى التسجيل أولاً.",
+        "paymentUrlNotFound": "لم يتم العثور على رابط الدفع في الاستجابة. يرجى المحاولة مرة أخرى.",
+        "subscribeFailed": "فشل الاشتراك. يرجى المحاولة مرة أخرى."
+      }
+    }
   }
 }

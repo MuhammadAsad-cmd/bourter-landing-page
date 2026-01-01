@@ -3,33 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 import { APIProvider, Map, Marker, useMap } from "@vis.gl/react-google-maps";
 
-// Component to control map center and zoom when location changes
-const MapController = ({ selectedLocation, onMapReady }) => {
+// Component to get map reference and notify when ready
+const MapController = ({ onMapReady, mapRef }) => {
   const map = useMap("location-map");
-  const hasCalledReadyRef = useRef(false);
+  const hasCalledRef = useRef(false);
 
   useEffect(() => {
-    if (map && !hasCalledReadyRef.current) {
-      hasCalledReadyRef.current = true;
+    if (map && !hasCalledRef.current) {
+      hasCalledRef.current = true;
+      if (mapRef) {
+        mapRef.current = map;
+      }
       if (onMapReady) {
         onMapReady();
       }
     }
-  }, [map, onMapReady]);
-
-  useEffect(() => {
-    if (map && selectedLocation.lat && selectedLocation.lng) {
-      const timer = setTimeout(() => {
-        try {
-          map.setCenter(selectedLocation);
-          map.setZoom(15);
-        } catch (error) {
-          console.error("Error setting map center:", error);
-        }
-      }, 200);
-      return () => clearTimeout(timer);
-    }
-  }, [map, selectedLocation.lat, selectedLocation.lng]);
+  }, [map, onMapReady, mapRef]);
 
   return null;
 };
@@ -41,68 +30,212 @@ const LocationMapPicker = ({
   onLocationSearchChange 
 }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const mapRef = useRef(null);
+  const lastSelectedLocationRef = useRef(null);
   const inputRef = useRef(null);
   const autocompleteInstanceRef = useRef(null);
 
   // Initialize Google Maps Places Autocomplete
   useEffect(() => {
+    let visibilityCheckInterval = null;
+    let checkInterval = null;
+    let timeout = null;
+    const focusHandler = () => {
+      const pacContainer = document.querySelector('.pac-container');
+      if (pacContainer) {
+        pacContainer.style.zIndex = '9999';
+        pacContainer.style.position = 'absolute';
+        pacContainer.style.display = 'block';
+      }
+    };
+    const inputHandler = focusHandler;
+
     const initAutocomplete = () => {
       if (
         typeof window !== "undefined" &&
         window.google &&
         window.google.maps &&
         window.google.maps.places &&
-        inputRef.current &&
-        !autocompleteInstanceRef.current
+        window.google.maps.places.Autocomplete &&
+        inputRef.current
       ) {
-        autocompleteInstanceRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-          types: ["geocode"],
-          fields: ["geometry", "formatted_address"],
-        });
+        // Clean up existing autocomplete if any
+        if (autocompleteInstanceRef.current) {
+          window.google?.maps?.event?.clearInstanceListeners?.(autocompleteInstanceRef.current);
+          autocompleteInstanceRef.current = null;
+        }
 
-        autocompleteInstanceRef.current.addListener("place_changed", () => {
-          const place = autocompleteInstanceRef.current.getPlace();
-          if (place.geometry && place.geometry.location) {
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-            onLocationSelect({ lat, lng });
-            onLocationSearchChange(place.formatted_address || "");
+        try {
+          autocompleteInstanceRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+            types: ["geocode"],
+            fields: ["geometry", "formatted_address", "name"],
+          });
+
+          // Monitor and fix dropdown visibility
+          visibilityCheckInterval = setInterval(() => {
+            const pacContainer = document.querySelector('.pac-container');
+            if (pacContainer) {
+              pacContainer.style.zIndex = '9999';
+              if (pacContainer.style.display === 'none') {
+                pacContainer.style.display = 'block';
+              }
+            }
+          }, 100);
+
+          autocompleteInstanceRef.current.addListener("place_changed", () => {
+            const place = autocompleteInstanceRef.current.getPlace();
+            if (place.geometry && place.geometry.location) {
+              const lat = place.geometry.location.lat();
+              const lng = place.geometry.location.lng();
+              const address = place.formatted_address || place.name || "";
+              const newLocation = { lat, lng };
+              
+              // Update location
+              onLocationSelect(newLocation);
+              onLocationSearchChange(address);
+              
+              // Update input value
+              if (inputRef.current) {
+                inputRef.current.value = address;
+              }
+              
+              // Close the autocomplete dropdown
+              if (autocompleteInstanceRef.current) {
+                autocompleteInstanceRef.current.set('place', null);
+              }
+              
+              // Hide the dropdown container
+              const pacContainer = document.querySelector('.pac-container');
+              if (pacContainer) {
+                pacContainer.style.display = 'none';
+              }
+              
+              // Blur the input to close dropdown
+              if (inputRef.current) {
+                inputRef.current.blur();
+              }
+              
+              // Update map center and zoom when location is selected from search
+              if (mapRef.current) {
+                try {
+                  mapRef.current.setCenter(newLocation);
+                  mapRef.current.setZoom(15);
+                } catch (error) {
+                  console.error("Error updating map:", error);
+                }
+              }
+              
+              if (visibilityCheckInterval) {
+                clearInterval(visibilityCheckInterval);
+                visibilityCheckInterval = null;
+              }
+            }
+          });
+
+          // Listen for input focus to ensure dropdown is ready
+          if (inputRef.current) {
+            inputRef.current.addEventListener('focus', focusHandler);
+            inputRef.current.addEventListener('input', inputHandler);
           }
-        });
+
+          return true;
+        } catch (error) {
+          console.error("Error initializing autocomplete:", error);
+          return false;
+        }
+      }
+      return false;
+    };
+
+    // Wait for input to be ready and Google Maps to load
+    const initialize = () => {
+      if (inputRef.current) {
+        if (initAutocomplete()) {
+          if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+          }
+          if (timeout) {
+            clearTimeout(timeout);
+            timeout = null;
+          }
+        }
       }
     };
 
-    const checkInterval = setInterval(() => {
-      if (
-        typeof window !== "undefined" &&
-        window.google &&
-        window.google.maps &&
-        window.google.maps.places
-      ) {
-        initAutocomplete();
-        clearInterval(checkInterval);
-      }
-    }, 100);
+    // Try immediately
+    initialize();
 
-    const timeout = setTimeout(() => {
-      clearInterval(checkInterval);
+    // If not ready, check periodically
+    checkInterval = setInterval(initialize, 100);
+
+    timeout = setTimeout(() => {
+      if (checkInterval) {
+        clearInterval(checkInterval);
+        checkInterval = null;
+      }
     }, 10000);
 
     return () => {
-      clearInterval(checkInterval);
-      clearTimeout(timeout);
+      if (checkInterval) {
+        clearInterval(checkInterval);
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      if (visibilityCheckInterval) {
+        clearInterval(visibilityCheckInterval);
+      }
       if (autocompleteInstanceRef.current) {
         window.google?.maps?.event?.clearInstanceListeners?.(autocompleteInstanceRef.current);
+        autocompleteInstanceRef.current = null;
+      }
+      if (inputRef.current) {
+        inputRef.current.removeEventListener('focus', focusHandler);
+        inputRef.current.removeEventListener('input', inputHandler);
       }
     };
   }, [onLocationSelect, onLocationSearchChange]);
+
+  // Update map center only when location changes from external source (like initial load)
+  useEffect(() => {
+    if (mapRef.current && selectedLocation.lat && selectedLocation.lng) {
+      // Check if this is a new location (different from last one)
+      const currentKey = `${selectedLocation.lat}-${selectedLocation.lng}`;
+      const lastKey = lastSelectedLocationRef.current 
+        ? `${lastSelectedLocationRef.current.lat}-${lastSelectedLocationRef.current.lng}`
+        : null;
+      
+      // Only update if location actually changed
+      if (currentKey !== lastKey) {
+        lastSelectedLocationRef.current = selectedLocation;
+        
+        // Only update map if this is initial load (no last location) or if it's from search
+        // Don't update if user is dragging/zooming
+        if (!lastKey) {
+          // Initial location - set center and zoom
+          setTimeout(() => {
+            if (mapRef.current) {
+              try {
+                mapRef.current.setCenter(selectedLocation);
+                mapRef.current.setZoom(15);
+              } catch (error) {
+                console.error("Error setting initial map center:", error);
+              }
+            }
+          }, 500);
+        }
+      }
+    }
+  }, [selectedLocation.lat, selectedLocation.lng]);
 
   // Reverse geocode to get address when location is set but no search text
   useEffect(() => {
     if (
       selectedLocation.lat && 
       selectedLocation.lng && 
-      !locationSearch
+      !locationSearch &&
+      mapLoaded
     ) {
       const performGeocode = () => {
         if (
@@ -147,35 +280,62 @@ const LocationMapPicker = ({
         clearTimeout(timeout);
       };
     }
-  }, [selectedLocation.lat, selectedLocation.lng, locationSearch, onLocationSearchChange]);
+  }, [selectedLocation.lat, selectedLocation.lng, locationSearch, onLocationSearchChange, mapLoaded]);
 
-  const handleMapClick = (e) => {
-    if (e.detail?.latLng) {
-      const lat = e.detail.latLng.lat;
-      const lng = e.detail.latLng.lng;
-      onLocationSelect({ lat, lng });
-    }
-  };
-
-  const defaultCenter = { lat: 24.8607, lng: 67.0011 };
-  const center = selectedLocation.lat && selectedLocation.lng ? selectedLocation : defaultCenter;
-  const zoom = selectedLocation.lat && selectedLocation.lng ? 15 : 10;
+  const defaultCenter = selectedLocation.lat && selectedLocation.lng 
+    ? selectedLocation 
+    : { lat: 24.8607, lng: 67.0011 };
+  const defaultZoom = selectedLocation.lat && selectedLocation.lng ? 15 : 10;
 
   return (
     <div className="space-y-3">
-      <div className="relative">
+      <div className="relative z-50">
         <input
           ref={inputRef}
           type="text"
-          value={locationSearch}
-          onChange={(e) => onLocationSearchChange(e.target.value)}
+          defaultValue={locationSearch || ""}
           placeholder="Search for a location..."
           className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
+          autoComplete="off"
+          id="location-search-input"
         />
         <svg className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
+      {/* Global styles for Google Places Autocomplete dropdown */}
+      <style jsx global>{`
+        .pac-container {
+          z-index: 9999 !important;
+          border-radius: 8px !important;
+          margin-top: 4px !important;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+          border: 1px solid #e5e7eb !important;
+          background-color: white !important;
+          font-family: inherit !important;
+        }
+        .pac-item {
+          padding: 12px 16px !important;
+          cursor: pointer !important;
+          border-top: 1px solid #f3f4f6 !important;
+          font-size: 14px !important;
+        }
+        .pac-item:first-child {
+          border-top: none !important;
+        }
+        .pac-item:hover {
+          background-color: #f3f4f6 !important;
+        }
+        .pac-item-selected {
+          background-color: #e5e7eb !important;
+        }
+        .pac-icon {
+          margin-right: 8px !important;
+        }
+        .pac-matched {
+          font-weight: 600 !important;
+        }
+      `}</style>
       
       <div className="relative bg-gray-100 rounded-lg" style={{ height: "350px", width: "100%", overflow: "hidden", minHeight: "350px" }}>
         {!mapLoaded && (
@@ -190,15 +350,16 @@ const LocationMapPicker = ({
           </div>
         )}
         
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
+        <APIProvider 
+          apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
+          libraries={["places"]}
+        >
           <Map
             id="location-map"
-            center={center}
-            zoom={zoom}
             defaultCenter={defaultCenter}
-            defaultZoom={10}
+            defaultZoom={defaultZoom}
             {...(process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID && { mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID })}
-            gestureHandling="auto"
+            gestureHandling="greedy"
             disableDefaultUI={false}
             zoomControl={true}
             mapTypeControl={true}
@@ -206,7 +367,6 @@ const LocationMapPicker = ({
             streetViewControl={false}
             rotateControl={false}
             fullscreenControl={true}
-            onClick={handleMapClick}
             style={{ height: "100%", width: "100%", display: "block" }}
           >
             {selectedLocation.lat && selectedLocation.lng && (
@@ -216,8 +376,8 @@ const LocationMapPicker = ({
               />
             )}
             <MapController 
-              selectedLocation={selectedLocation}
-              onMapReady={() => setMapLoaded(true)}
+              onMapReady={() => setMapLoaded(true)} 
+              mapRef={mapRef}
             />
           </Map>
         </APIProvider>

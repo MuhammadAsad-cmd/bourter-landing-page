@@ -1,4 +1,4 @@
-const FormNavigation = ({ currentStep, handleBack, handleNext, isLastStep, loading = false }) => {
+const FormNavigation = ({ currentStep, handleBack, handleNext, isLastStep, loading = false, t }) => {
   return (
     <div className="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
       <div className="w-[120px]">
@@ -22,7 +22,7 @@ const FormNavigation = ({ currentStep, handleBack, handleNext, isLastStep, loadi
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back
+            {t("driverPage.form.navigation.back")}
           </button>
         ) : (
           <div /> /* Placeholder for alignment */
@@ -46,11 +46,11 @@ const FormNavigation = ({ currentStep, handleBack, handleNext, isLastStep, loadi
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {isLastStep ? "Submitting..." : "Saving..."}
+              {isLastStep ? t("driverPage.form.navigation.submitting") : t("driverPage.form.navigation.saving")}
             </>
           ) : (
             <>
-              {isLastStep ? "Submit Application" : "Next Step"}
+              {isLastStep ? t("driverPage.form.navigation.submitApplication") : t("driverPage.form.navigation.nextStep")}
               {!isLastStep && (
                 <svg
                   className="w-5 h-5 animate-pulse"

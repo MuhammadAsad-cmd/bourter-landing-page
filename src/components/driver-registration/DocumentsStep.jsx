@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
-const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => {
+const FileUploadField = ({ label, name, value, accept, onChange, onDelete, t }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState(null);
 
@@ -97,7 +97,7 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
             </button>
             {/* Overlay on hover */}
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-[32px] z-10">
-              <div className="text-white text-sm font-semibold">Click to change</div>
+              <div className="text-white text-sm font-semibold">{t("driverPage.form.documents.clickToChange")}</div>
             </div>
           </>
         )}
@@ -109,7 +109,7 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p className="text-sm text-gray-600 font-medium">Uploading...</p>
+            <p className="text-sm text-gray-600 font-medium">{t("driverPage.form.documents.uploading")}</p>
           </div>
         )}
 
@@ -132,10 +132,10 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
               </svg>
             </div>
             <p className="mb-1 text-sm font-medium">
-              <span className="font-bold underline decoration-primary/30">Click to upload</span> or drag and drop
+              <span className="font-bold underline decoration-primary/30">{t("driverPage.form.documents.clickToUpload")}</span> {t("driverPage.form.documents.dragAndDrop")}
             </p>
             <p className="text-xs opacity-70">
-              PDF, JPG, PNG (max. 5MB)
+              {t("driverPage.form.documents.fileTypes")}
             </p>
           </div>
         )}
@@ -147,7 +147,7 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             <p className="font-semibold text-sm max-w-[200px] truncate px-4">{value.name}</p>
-            <p className="text-xs mt-1 text-gray-500">Click to change</p>
+            <p className="text-xs mt-1 text-gray-500">{t("driverPage.form.documents.clickToChange")}</p>
             {/* Delete Button for PDF */}
             <button
               type="button"
@@ -187,7 +187,7 @@ const FileUploadField = ({ label, name, value, accept, onChange, onDelete }) => 
   );
 };
 
-const DocumentsStep = ({ formData, handleInputChange, setFormData }) => {
+const DocumentsStep = ({ formData, handleInputChange, setFormData, t }) => {
   const handleDelete = (fieldName) => {
     setFormData((prev) => ({
       ...prev,
@@ -199,39 +199,43 @@ const DocumentsStep = ({ formData, handleInputChange, setFormData }) => {
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="grid md:grid-cols-2 gap-6">
         <FileUploadField
-          label="ID Card (Front & Back)"
+          label={t("driverPage.form.documents.idCard")}
           name="idCard"
           value={formData.idCard}
           accept="image/*,.pdf"
           onChange={handleInputChange}
           onDelete={handleDelete}
+          t={t}
         />
 
         <FileUploadField
-          label="Driving License"
+          label={t("driverPage.form.documents.drivingLicense")}
           name="drivingLicense"
           value={formData.drivingLicense}
           accept="image/*,.pdf"
           onChange={handleInputChange}
           onDelete={handleDelete}
+          t={t}
         />
 
         <FileUploadField
-          label="Vehicle Registration"
+          label={t("driverPage.form.documents.vehicleRegistration")}
           name="vehicleRegistration"
           value={formData.vehicleRegistration}
           accept="image/*,.pdf"
           onChange={handleInputChange}
           onDelete={handleDelete}
+          t={t}
         />
 
         <FileUploadField
-          label="Vehicle Image (Clean & Clear)"
+          label={t("driverPage.form.documents.vehicleImage")}
           name="vehicleImage"
           value={formData.vehicleImage}
           accept="image/*"
           onChange={handleInputChange}
           onDelete={handleDelete}
+          t={t}
         />
       </div>
 
@@ -259,15 +263,15 @@ const DocumentsStep = ({ formData, handleInputChange, setFormData }) => {
           </svg>
         </div>
         <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer select-none">
-          By submitting documents, you confirm that all information is accurate and agree to the{" "}
+          {t("driverPage.form.documents.termsAgreement")}{" "}
           <Link href="#" className="text-primary font-semibold hover:underline">
-            Terms of Service
+            {t("driverPage.form.documents.termsOfService")}
           </Link>{" "}
-          and{" "}
+          {t("driverPage.form.documents.and")}{" "}
           <Link href="#" className="text-primary font-semibold hover:underline">
-            Privacy Policy
+            {t("driverPage.form.documents.privacyPolicy")}
           </Link>
-          .
+          {t("driverPage.form.documents.period")}
         </label>
       </div>
     </div>

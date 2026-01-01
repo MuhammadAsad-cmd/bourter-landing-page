@@ -2,9 +2,16 @@
 
 import DriverRegistrationForm from "@/components/DriverRegistrationForm";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 export default function JoinAsDriverPage() {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -29,8 +36,11 @@ export default function JoinAsDriverPage() {
 
   return (
     <div className="min-h-screen overflow-x-hidden font-sans">
+      {/* --- HEADER --- */}
+      <Header theme="light" />
+
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-24 pb-32 lg:pt-40 overflow-hidden">
+      <section className="relative pt-10 pb-32 overflow-hidden">
         {/* Rich Gradient Background */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 bg-white">
           <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full bg-linear-to-br from-[#06294A]/10 via-[#06294A]/5 to-transparent blur-[120px]" />
@@ -50,20 +60,20 @@ export default function JoinAsDriverPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
               </span>
-              <span className="text-sm font-semibold text-[#06294A] tracking-wide">Now recruiting drivers in your area</span>
+              <span className="text-sm font-semibold text-[#06294A] tracking-wide">{t("driverPage.hero.recruitingBadge")}</span>
             </motion.div>
 
             <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl lg:text-[80px] font-bold text-[#06294A] mb-8 tracking-tight leading-[1.1]">
-              Drive with <span className="relative inline-block">
-                Bourter
-                <svg className="absolute w-full h-4 -bottom-1 left-0 text-[#D46E16] opacity-80" viewBox="0 0 100 10" preserveAspectRatio="none">
+              {t("driverPage.hero.title")} <span className="relative inline-block">
+                {t("driverPage.hero.titleHighlight")}
+                <svg className={`absolute w-full h-4 -bottom-1 ${locale === "ar" ? "right-0" : "left-0"} text-[#D46E16] opacity-80`} viewBox="0 0 100 10" preserveAspectRatio="none">
                   <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" />
                 </svg>
               </span>
             </motion.h1>
 
             <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Be your own boss. Set your schedule. Earn competitive rates plus <span className="text-[#D46E16] font-semibold">100% of your tips</span>.
+              {t("driverPage.hero.description")} <span className="text-[#D46E16] font-semibold">{t("driverPage.hero.tipsHighlight")}</span>.
             </motion.p>
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -72,7 +82,7 @@ export default function JoinAsDriverPage() {
                 className="group relative px-8 py-4 rounded-full bg-[#06294A] text-white font-bold text-lg overflow-hidden shadow-lg shadow-[#06294A]/25 transition-all hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                Start Application
+                {t("driverPage.hero.startApplication")}
               </button>
 
               <div className="flex items-center gap-4 px-6 py-4 rounded-full bg-white/60 backdrop-blur-sm border border-white/50 shadow-sm transition-all hover:bg-white/80">
@@ -88,9 +98,9 @@ export default function JoinAsDriverPage() {
                     </div>
                   ))}
                 </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-[#06294A]">2,000+ Drivers</p>
-                  <p className="text-xs text-gray-500 font-medium">Joined this month</p>
+                <div className={locale === "ar" ? "text-right" : "text-left"}>
+                  <p className="text-sm font-bold text-[#06294A]">{t("driverPage.hero.driversCount")}</p>
+                  <p className="text-xs text-gray-500 font-medium">{t("driverPage.hero.joinedThisMonth")}</p>
                 </div>
               </div>
             </motion.div>
@@ -100,24 +110,24 @@ export default function JoinAsDriverPage() {
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
-                title: "Flexible Schedule",
-                desc: "Drive when you want, for as long as you want. You are in complete control.",
+                title: t("driverPage.features.flexibleSchedule.title"),
+                desc: t("driverPage.features.flexibleSchedule.description"),
                 icon: (
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 ),
                 delay: 0.4
               },
               {
-                title: "Weekly Payments",
-                desc: "Get paid fast with reliable weekly deposits directly to your bank account.",
+                title: t("driverPage.features.weeklyPayments.title"),
+                desc: t("driverPage.features.weeklyPayments.description"),
                 icon: (
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 ),
                 delay: 0.5
               },
               {
-                title: "24/7 Support",
-                desc: "Our dedicated support team is always ready to help you on the road.",
+                title: t("driverPage.features.support.title"),
+                desc: t("driverPage.features.support.description"),
                 icon: (
                   <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01" /></svg>
                 ),
@@ -158,8 +168,8 @@ export default function JoinAsDriverPage() {
             className="max-w-4xl mx-auto"
           >
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold text-[#06294A] mb-4">Let's Get You on the Road</h2>
-              <p className="text-gray-600 text-lg max-w-xl mx-auto">Complete the simple steps below to join our elite fleet of drivers.</p>
+              <h2 className="text-3xl md:text-5xl font-bold text-[#06294A] mb-4">{t("driverPage.formSection.title")}</h2>
+              <p className="text-gray-600 text-lg max-w-xl mx-auto">{t("driverPage.formSection.description")}</p>
             </div>
 
             {/* Embedded Form Component */}

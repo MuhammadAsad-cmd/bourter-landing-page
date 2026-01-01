@@ -12,6 +12,7 @@ const PersonalInfoStep = ({
   showConfirmPassword,
   setShowConfirmPassword,
   setFormData,
+  t,
 }) => {
   const [countries] = useState(Country.getAllCountries());
   const [cities, setCities] = useState([]);
@@ -137,7 +138,7 @@ const PersonalInfoStep = ({
                     d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span className="text-[10px] font-medium uppercase tracking-wider">Upload</span>
+                <span className="text-[10px] font-medium uppercase tracking-wider">{t("driverPage.form.personalInfo.upload")}</span>
               </div>
             )}
 
@@ -161,7 +162,7 @@ const PersonalInfoStep = ({
       <div className="grid md:grid-cols-2 gap-6">
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Your Name
+            {t("driverPage.form.personalInfo.yourName")}
           </label>
           <div className="relative">
             <input
@@ -169,7 +170,7 @@ const PersonalInfoStep = ({
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              placeholder="Ex. John Doe"
+              placeholder={t("driverPage.form.personalInfo.namePlaceholder")}
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />
@@ -181,7 +182,7 @@ const PersonalInfoStep = ({
 
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Phone Number
+            {t("driverPage.form.personalInfo.phoneNumber")}
           </label>
           <div className="relative">
             <input
@@ -189,7 +190,7 @@ const PersonalInfoStep = ({
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              placeholder="+1 (555) 000-0000"
+              placeholder={t("driverPage.form.personalInfo.phonePlaceholder")}
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />
@@ -202,7 +203,7 @@ const PersonalInfoStep = ({
 
       <div className="group">
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          Email Address
+          {t("driverPage.form.personalInfo.emailAddress")}
         </label>
         <div className="relative">
           <input
@@ -210,7 +211,7 @@ const PersonalInfoStep = ({
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder="john@example.com"
+            placeholder={t("driverPage.form.personalInfo.emailPlaceholder")}
             className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
             required
           />
@@ -222,7 +223,7 @@ const PersonalInfoStep = ({
 
       <div className="group">
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          Address
+          {t("driverPage.form.personalInfo.address")}
         </label>
         <div className="relative">
           <input
@@ -230,7 +231,7 @@ const PersonalInfoStep = ({
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            placeholder="Complete address"
+            placeholder={t("driverPage.form.personalInfo.addressPlaceholder")}
             className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
             required
           />
@@ -244,7 +245,7 @@ const PersonalInfoStep = ({
       <div className="grid md:grid-cols-2 gap-6">
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Country <span className="text-red-500">*</span>
+            {t("driverPage.form.personalInfo.country")} <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <select
@@ -254,7 +255,7 @@ const PersonalInfoStep = ({
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium hover:border-gray-300 appearance-none cursor-pointer"
               required
             >
-              <option value="">Select Country</option>
+              <option value="">{t("driverPage.form.personalInfo.selectCountry")}</option>
               {countries.map((country) => (
                 <option key={country.isoCode} value={country.isoCode}>
                   {country.name}
@@ -272,7 +273,7 @@ const PersonalInfoStep = ({
 
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            City <span className="text-red-500">*</span>
+            {t("driverPage.form.personalInfo.city")} <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <select
@@ -283,7 +284,7 @@ const PersonalInfoStep = ({
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium hover:border-gray-300 appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               required
             >
-              <option value="">{selectedCountryCode ? "Select City" : "Select Country First"}</option>
+              <option value="">{selectedCountryCode ? t("driverPage.form.personalInfo.selectCity") : t("driverPage.form.personalInfo.selectCountryFirst")}</option>
               {cities.map((city) => (
                 <option key={city.name} value={city.name}>
                   {city.name}
@@ -302,7 +303,7 @@ const PersonalInfoStep = ({
 
       <div className="group">
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          Location (Select on Map) <span className="text-red-500">*</span>
+          {t("driverPage.form.personalInfo.location")} <span className="text-red-500">*</span>
         </label>
         <LocationMapPicker
           selectedLocation={selectedLocation}
@@ -315,7 +316,7 @@ const PersonalInfoStep = ({
       <div className="grid md:grid-cols-2 gap-6">
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Password
+            {t("driverPage.form.personalInfo.password")}
           </label>
           <div className="relative">
             <input
@@ -323,7 +324,7 @@ const PersonalInfoStep = ({
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              placeholder="Create password"
+              placeholder={t("driverPage.form.personalInfo.passwordPlaceholder")}
               className="w-full pl-11 pr-12 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />
@@ -351,7 +352,7 @@ const PersonalInfoStep = ({
 
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Confirm Password
+            {t("driverPage.form.personalInfo.confirmPassword")}
           </label>
           <div className="relative">
             <input
@@ -359,7 +360,7 @@ const PersonalInfoStep = ({
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              placeholder="Confirm password"
+              placeholder={t("driverPage.form.personalInfo.confirmPasswordPlaceholder")}
               className="w-full pl-11 pr-12 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />

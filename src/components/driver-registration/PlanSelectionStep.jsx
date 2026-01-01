@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const PlanSelectionStep = ({ formData, setFormData, userId }) => {
+const PlanSelectionStep = ({ formData, setFormData, userId, t }) => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,12 +22,12 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
       if (response.data.result && response.data.data) {
         setPlans(response.data.data);
       } else {
-        setError("Failed to load plans. Please try again.");
+        setError(t("driverPage.form.planSelection.failedToLoad"));
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Failed to load plans. Please try again."
-      );
+        setError(
+          err.response?.data?.message || t("driverPage.form.planSelection.failedToLoad")
+        );
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
 
   const handleSubscribe = async (plan) => {
     if (!userId) {
-      setError("User ID not found. Please login first.");
+      setError(t("driverPage.form.errors.userIdNotFound"));
       return;
     }
 
@@ -74,16 +74,16 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
           window.open(paymentUrl, '_blank');
           setSubscribing(null);
         } else {
-          setError("Payment URL not found in response. Please try again.");
+          setError(t("driverPage.form.errors.paymentUrlNotFound"));
           setSubscribing(null);
         }
       } else {
-        setError(response.data.message || "Failed to subscribe. Please try again.");
+        setError(response.data.message || t("driverPage.form.errors.subscribeFailed"));
         setSubscribing(null);
       }
     } catch (err) {
       setError(
-        err.response?.data?.message || "Failed to subscribe. Please try again."
+        err.response?.data?.message || t("driverPage.form.errors.subscribeFailed")
       );
       setSubscribing(null);
     }
@@ -93,10 +93,10 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
     <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-          Choose Your <span className="text-primary">Driver Plan</span>
+          {t("driverPage.form.planSelection.title")} <span className="text-primary">{t("driverPage.form.planSelection.titleHighlight")}</span>
         </h2>
         <p className="text-gray-600 max-w-lg mx-auto">
-          Select the best plan that fits your driving schedule and earnings goals.
+          {t("driverPage.form.planSelection.description")}
         </p>
       </div>
 
@@ -111,7 +111,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                 : "text-gray-500 hover:text-gray-900"
               }`}
           >
-            Monthly
+            {t("driverPage.form.planSelection.monthly")}
           </button>
           <button
             type="button"
@@ -121,9 +121,9 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                 : "text-gray-500 hover:text-gray-900"
               }`}
           >
-            Yearly
+            {t("driverPage.form.planSelection.yearly")}
             <span className="absolute -top-3 -right-3 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm animate-bounce">
-              SAVE 20%
+              {t("driverPage.form.planSelection.save20")}
             </span>
           </button>
         </div>
@@ -178,7 +178,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                       {plan.title}
                     </h3>
                     <p className="text-gray-500 text-sm">
-                      Perfect for {plan.type === "month" ? "monthly" : "yearly"} drivers
+                      {t("driverPage.form.planSelection.perfectFor")} {plan.type === "month" ? t("driverPage.form.planSelection.monthly") : t("driverPage.form.planSelection.yearly")} {t("driverPage.form.planSelection.drivers")}
                     </p>
                   </div>
 
@@ -188,7 +188,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                         {formatPrice(plan.amount)}
                       </span>
                       <span className="text-gray-500 font-medium">
-                        /{plan.type === "month" ? "month" : "year"}
+                        /{plan.type === "month" ? t("driverPage.form.planSelection.month") : t("driverPage.form.planSelection.year")}
                       </span>
                     </div>
                   </div>
@@ -204,7 +204,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="leading-tight">Ride history & ratings</span>
+                        <span className="leading-tight">{t("driverPage.form.planSelection.rideHistory")}</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm font-medium text-gray-700">
                         <svg
@@ -215,7 +215,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="leading-tight">Access to payout & wallet</span>
+                        <span className="leading-tight">{t("driverPage.form.planSelection.accessPayout")}</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm font-medium text-gray-700">
                         <svg
@@ -226,7 +226,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="leading-tight">Unlimited ride requests</span>
+                        <span className="leading-tight">{t("driverPage.form.planSelection.unlimitedRides")}</span>
                       </div>
                       <div className="flex items-start gap-3 text-sm font-medium text-gray-700">
                         <svg
@@ -237,7 +237,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="leading-tight">In-app navigation & support</span>
+                        <span className="leading-tight">{t("driverPage.form.planSelection.inAppSupport")}</span>
                       </div>
                     </div>
                   </div>
@@ -258,10 +258,10 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Processing...
+                        {t("driverPage.form.planSelection.processing")}
                       </span>
                     ) : (
-                      "Subscribe"
+                      t("driverPage.form.planSelection.subscribe")
                     )}
                   </button>
                 </div>
@@ -269,7 +269,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId }) => {
             })
           ) : (
             <div className="col-span-2 text-center py-12">
-              <p className="text-gray-500">No plans available for this period.</p>
+              <p className="text-gray-500">{t("driverPage.form.planSelection.noPlansAvailable")}</p>
             </div>
           )}
         </div>

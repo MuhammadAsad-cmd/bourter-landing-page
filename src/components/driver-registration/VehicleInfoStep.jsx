@@ -1,10 +1,10 @@
-const VehicleInfoStep = ({ formData, handleInputChange }) => {
+const VehicleInfoStep = ({ formData, handleInputChange, t }) => {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="grid md:grid-cols-2 gap-6">
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Vehicle Type
+            {t("driverPage.form.vehicleInfo.vehicleType")}
           </label>
           <div className="relative">
             <select
@@ -14,7 +14,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
               className="w-full pl-11 pr-10 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 font-medium appearance-none cursor-pointer hover:border-gray-300"
               required
             >
-              <option value="">Select Type</option>
+              <option value="">{t("driverPage.form.vehicleInfo.selectType")}</option>
               <option value="Bike">Bike</option>
               <option value="Car">Car</option>
               <option value="Sedan">Sedan</option>
@@ -37,7 +37,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
 
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Vehicle Model
+            {t("driverPage.form.vehicleInfo.vehicleModel")}
           </label>
           <div className="relative">
             <input
@@ -45,7 +45,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
               name="vehicleModel"
               value={formData.vehicleModel}
               onChange={handleInputChange}
-              placeholder="Enter model year (e.g., 2024)"
+              placeholder={t("driverPage.form.vehicleInfo.modelPlaceholder")}
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />
@@ -69,7 +69,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Vehicle Number
+            {t("driverPage.form.vehicleInfo.vehicleNumber")}
           </label>
           <div className="relative">
             <input
@@ -77,7 +77,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
               name="vehicleNumber"
               value={formData.vehicleNumber}
               onChange={handleInputChange}
-              placeholder="ABC-1234"
+              placeholder={t("driverPage.form.vehicleInfo.numberPlaceholder")}
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />
@@ -89,7 +89,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
 
         <div className="group">
           <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-            Vehicle Color
+            {t("driverPage.form.vehicleInfo.vehicleColor")}
           </label>
           <div className="relative">
             <input
@@ -97,7 +97,7 @@ const VehicleInfoStep = ({ formData, handleInputChange }) => {
               name="color"
               value={formData.color}
               onChange={handleInputChange}
-              placeholder="Ex. Blue, Green, Silver"
+              placeholder={t("driverPage.form.vehicleInfo.colorPlaceholder")}
               className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
               required
             />

@@ -6,12 +6,13 @@ const LoginStep = ({
   onRegisterClick,
   error,
   loading,
+  t,
 }) => {
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-        <p className="text-gray-600">Login to continue your registration</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("driverPage.form.login.welcomeBack")}</h2>
+        <p className="text-gray-600">{t("driverPage.form.login.loginToContinue")}</p>
       </div>
 
       {error && (
@@ -22,7 +23,7 @@ const LoginStep = ({
 
       <div className="group">
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          Email Address
+          {t("driverPage.form.login.emailAddress")}
         </label>
         <div className="relative">
           <input
@@ -30,7 +31,7 @@ const LoginStep = ({
             name="email"
             value={loginData.email}
             onChange={handleLoginChange}
-            placeholder="john@example.com"
+            placeholder={t("driverPage.form.login.emailPlaceholder")}
             className="w-full pl-11 pr-4 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
             required
             disabled={loading}
@@ -53,7 +54,7 @@ const LoginStep = ({
 
       <div className="group">
         <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          Password
+          {t("driverPage.form.login.password")}
         </label>
         <div className="relative">
           <input
@@ -61,7 +62,7 @@ const LoginStep = ({
             name="password"
             value={loginData.password}
             onChange={handleLoginChange}
-            placeholder="Enter your password"
+            placeholder={t("driverPage.form.login.passwordPlaceholder")}
             className="w-full pl-11 pr-12 py-3.5 rounded-full border-2 border-gray-100 bg-white focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-300 placeholder:text-gray-400 font-medium hover:border-gray-300"
             required
             disabled={loading}

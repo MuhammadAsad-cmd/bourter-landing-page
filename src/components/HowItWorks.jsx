@@ -49,11 +49,11 @@ const HowItWorks = () => {
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
             <div className="relative">
               <Image
-                src="/images/arabic man.svg"
+                src={locale === "en" ? "/images/Goods transport vehicle/6.png" : "/images/Goods transport vehicle/5.png"}
                 alt="Arabic Man"
                 width={500}
                 height={700}
-                className="object-contain"
+                className="object-contain w-full h-full"
                 priority
               />
             </div>

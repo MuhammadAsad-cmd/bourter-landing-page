@@ -11,8 +11,14 @@ import DocumentsStep from "./driver-registration/DocumentsStep";
 import PlanSelectionStep from "./driver-registration/PlanSelectionStep";
 import SuccessModal from "./driver-registration/SuccessModal";
 import FormNavigation from "./driver-registration/FormNavigation";
+import { useLanguage } from "@/lib/i18n/language-context";
+import { getTranslations } from "@/lib/i18n/get-translations";
+import { useTranslations } from "@/lib/i18n/use-translations";
 
 const DriverRegistrationForm = () => {
+  const { locale } = useLanguage();
+  const messages = getTranslations(locale);
+  const { t } = useTranslations(messages);
   const [showLogin, setShowLogin] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -64,10 +70,10 @@ const DriverRegistrationForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const steps = [
-    { number: 1, title: "Personal Information" },
-    { number: 2, title: "Vehicle Information" },
-    { number: 3, title: "Upload Documents" },
-    { number: 4, title: "Choose Plan" },
+    { number: 1, title: t("driverPage.form.steps.personalInfo") },
+    { number: 2, title: t("driverPage.form.steps.vehicleInfo") },
+    { number: 3, title: t("driverPage.form.steps.uploadDocuments") },
+    { number: 4, title: t("driverPage.form.steps.choosePlan") },
   ];
 
   // Determine which step to show based on user data
@@ -169,13 +175,13 @@ const DriverRegistrationForm = () => {
       } else {
         setError(
           response.data.message ||
-            "Login failed. Please check your credentials."
+            t("driverPage.form.errors.loginFailed")
         );
       }
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Login failed. Please check your credentials."
+          t("driverPage.form.errors.loginFailed")
       );
     } finally {
       setLoading(false);
@@ -271,12 +277,12 @@ const DriverRegistrationForm = () => {
         }
       } else {
         setError(
-          response.data.message || "Registration failed. Please try again."
+          response.data.message || t("driverPage.form.errors.registrationFailed")
         );
       }
     } catch (err) {
       setError(
-        err.response?.data?.message || "Registration failed. Please try again."
+        err.response?.data?.message || t("driverPage.form.errors.registrationFailed")
       );
     } finally {
       setLoading(false);
@@ -285,7 +291,7 @@ const DriverRegistrationForm = () => {
 
   const handleVehicleDetails = async () => {
     if (!userId) {
-      setError("User ID not found. Please register first.");
+      setError(t("driverPage.form.errors.userIdNotFound"));
       return;
     }
 
@@ -421,13 +427,13 @@ const DriverRegistrationForm = () => {
         }
       } else {
         setError(
-          response.data.message || "Failed to save details. Please try again."
+          response.data.message || t("driverPage.form.errors.saveFailed")
         );
       }
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Failed to save details. Please try again."
+          t("driverPage.form.errors.saveFailed")
       );
     } finally {
       setLoading(false);
@@ -451,6 +457,7 @@ const DriverRegistrationForm = () => {
           onRegisterClick={handleRegisterClick}
           error={error}
           loading={loading}
+          t={t}
         />
       );
     }
@@ -466,6 +473,7 @@ const DriverRegistrationForm = () => {
             showConfirmPassword={showConfirmPassword}
             setShowConfirmPassword={setShowConfirmPassword}
             setFormData={setFormData}
+            t={t}
           />
         );
       case 2:
@@ -473,6 +481,7 @@ const DriverRegistrationForm = () => {
           <VehicleInfoStep
             formData={formData}
             handleInputChange={handleInputChange}
+            t={t}
           />
         );
       case 3:
@@ -481,6 +490,7 @@ const DriverRegistrationForm = () => {
             formData={formData}
             handleInputChange={handleInputChange}
             setFormData={setFormData}
+            t={t}
           />
         );
       case 4:
@@ -489,6 +499,7 @@ const DriverRegistrationForm = () => {
             formData={formData} 
             setFormData={setFormData}
             userId={userId}
+            t={t}
           />
         );
       default:
@@ -521,11 +532,10 @@ const DriverRegistrationForm = () => {
           </Link> */}
 
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            Create Your <span className="text-primary">Driver Account</span>
+            {t("driverPage.form.createAccount")} <span className="text-primary">{t("driverPage.form.accountHighlight")}</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-xl mx-auto leading-relaxed">
-            Join our community of drivers and start earning on your own
-            schedule.
+            {t("driverPage.form.joinCommunity")}
           </p>
         </div>
 
@@ -562,7 +572,7 @@ const DriverRegistrationForm = () => {
                         "linear-gradient(130.4deg, #0053A2 15.06%, #06294A 87.46%)",
                     }}
                   >
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? t("driverPage.form.login.loggingIn") : t("driverPage.form.login.loginButton")}
                     {!loading && (
                       <svg
                         className="w-5 h-5 animate-pulse"
@@ -582,14 +592,14 @@ const DriverRegistrationForm = () => {
                 </div>
                 <div className="pt-4 text-center">
                   <p className="text-gray-600 text-sm">
-                    Don't have an account?{" "}
+                    {t("driverPage.form.login.dontHaveAccount")}{" "}
                     <button
                       type="button"
                       onClick={handleRegisterClick}
                       className="text-primary font-semibold cursor-pointer hover:underline"
                       disabled={loading}
                     >
-                      Register here
+                      {t("driverPage.form.login.registerHere")}
                     </button>
                   </p>
                 </div>
@@ -601,6 +611,7 @@ const DriverRegistrationForm = () => {
                 handleNext={handleNext}
                 isLastStep={currentStep === 4}
                 loading={loading}
+                t={t}
               />
             )}
           </form>
@@ -609,7 +620,7 @@ const DriverRegistrationForm = () => {
 
       {/* Success Modal */}
       {showSuccessModal && (
-        <SuccessModal onClose={() => setShowSuccessModal(false)} />
+        <SuccessModal onClose={() => setShowSuccessModal(false)} t={t} />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const SuccessModal = ({ onClose }) => {
+const SuccessModal = ({ onClose, t }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in">
@@ -21,11 +21,10 @@ const SuccessModal = ({ onClose }) => {
             </svg>
           </div>
           <h2 className="text-2xl font-bold text-primary mb-2">
-            Sign Up Successfully!
+            {t("driverPage.form.successModal.title")}
           </h2>
           <p className="text-text-secondary mb-6">
-            You're all set! You successfully registered your details. It's time
-            to explore the app now.
+            {t("driverPage.form.successModal.description")}
           </p>
           <Link
             href="/"
@@ -35,7 +34,7 @@ const SuccessModal = ({ onClose }) => {
                 "linear-gradient(130.4deg, #0053A2 15.06%, #06294A 87.46%)",
             }}
           >
-            Continue
+            {t("driverPage.form.successModal.continue")}
           </Link>
         </div>
       </div>

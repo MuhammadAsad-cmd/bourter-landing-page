@@ -138,5 +138,147 @@
     "subscribe": "Subscribe",
     "copyright": "@2025 Bourter",
     "allRightsReserved": "All Rights Reserved"
+  },
+  "driverPage": {
+    "hero": {
+      "recruitingBadge": "Now recruiting drivers in your area",
+      "title": "Drive with",
+      "titleHighlight": "Bourter",
+      "description": "Be your own boss. Set your schedule. Earn competitive rates plus",
+      "tipsHighlight": "100% of your tips",
+      "startApplication": "Start Application",
+      "driversCount": "2,000+ Drivers",
+      "joinedThisMonth": "Joined this month"
+    },
+    "features": {
+      "flexibleSchedule": {
+        "title": "Flexible Schedule",
+        "description": "Drive when you want, for as long as you want. You are in complete control."
+      },
+      "weeklyPayments": {
+        "title": "Weekly Payments",
+        "description": "Get paid fast with reliable weekly deposits directly to your bank account."
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Our dedicated support team is always ready to help you on the road."
+      }
+    },
+    "formSection": {
+      "title": "Let's Get You on the Road",
+      "description": "Complete the simple steps below to join our elite fleet of drivers."
+    },
+    "form": {
+      "createAccount": "Create Your",
+      "accountHighlight": "Driver Account",
+      "joinCommunity": "Join our community of drivers and start earning on your own schedule.",
+      "steps": {
+        "personalInfo": "Personal Information",
+        "vehicleInfo": "Vehicle Information",
+        "uploadDocuments": "Upload Documents",
+        "choosePlan": "Choose Plan"
+      },
+      "login": {
+        "welcomeBack": "Welcome Back",
+        "loginToContinue": "Login to continue your registration",
+        "emailAddress": "Email Address",
+        "emailPlaceholder": "john@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "loginButton": "Login",
+        "loggingIn": "Logging in...",
+        "dontHaveAccount": "Don't have an account?",
+        "registerHere": "Register here"
+      },
+      "personalInfo": {
+        "upload": "Upload",
+        "yourName": "Your Name",
+        "namePlaceholder": "Ex. John Doe",
+        "phoneNumber": "Phone Number",
+        "phonePlaceholder": "+1 (555) 000-0000",
+        "emailAddress": "Email Address",
+        "emailPlaceholder": "john@example.com",
+        "address": "Address",
+        "addressPlaceholder": "Complete address",
+        "country": "Country",
+        "selectCountry": "Select Country",
+        "city": "City",
+        "selectCity": "Select City",
+        "selectCountryFirst": "Select Country First",
+        "location": "Location (Select on Map)",
+        "password": "Password",
+        "passwordPlaceholder": "Create password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm password"
+      },
+      "vehicleInfo": {
+        "vehicleType": "Vehicle Type",
+        "selectType": "Select Type",
+        "vehicleModel": "Vehicle Model",
+        "modelPlaceholder": "Enter model year (e.g., 2024)",
+        "vehicleNumber": "Vehicle Number",
+        "numberPlaceholder": "ABC-1234",
+        "vehicleColor": "Vehicle Color",
+        "colorPlaceholder": "Ex. Blue, Green, Silver"
+      },
+      "documents": {
+        "idCard": "ID Card (Front & Back)",
+        "drivingLicense": "Driving License",
+        "vehicleRegistration": "Vehicle Registration",
+        "vehicleImage": "Vehicle Image (Clean & Clear)",
+        "clickToUpload": "Click to upload",
+        "dragAndDrop": "or drag and drop",
+        "fileTypes": "PDF, JPG, PNG (max. 5MB)",
+        "clickToChange": "Click to change",
+        "uploading": "Uploading...",
+        "deleteImage": "Delete image",
+        "deleteFile": "Delete file",
+        "termsAgreement": "By submitting documents, you confirm that all information is accurate and agree to the",
+        "termsOfService": "Terms of Service",
+        "and": "and",
+        "privacyPolicy": "Privacy Policy",
+        "period": "."
+      },
+      "planSelection": {
+        "title": "Choose Your",
+        "titleHighlight": "Driver Plan",
+        "description": "Select the best plan that fits your driving schedule and earnings goals.",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save20": "SAVE 20%",
+        "perfectFor": "Perfect for",
+        "drivers": "drivers",
+        "month": "month",
+        "year": "year",
+        "rideHistory": "Ride history & ratings",
+        "accessPayout": "Access to payout & wallet",
+        "unlimitedRides": "Unlimited ride requests",
+        "inAppSupport": "In-app navigation & support",
+        "subscribe": "Subscribe",
+        "processing": "Processing...",
+        "noPlansAvailable": "No plans available for this period.",
+        "failedToLoad": "Failed to load plans. Please try again."
+      },
+      "navigation": {
+        "back": "Back",
+        "nextStep": "Next Step",
+        "submitApplication": "Submit Application",
+        "saving": "Saving...",
+        "submitting": "Submitting..."
+      },
+      "successModal": {
+        "title": "Sign Up Successfully!",
+        "description": "You're all set! You successfully registered your details. It's time to explore the app now.",
+        "continue": "Continue"
+      },
+      "errors": {
+        "loginFailed": "Login failed. Please check your credentials.",
+        "registrationFailed": "Registration failed. Please try again.",
+        "saveFailed": "Failed to save details. Please try again.",
+        "userIdNotFound": "User ID not found. Please register first.",
+        "paymentUrlNotFound": "Payment URL not found in response. Please try again.",
+        "subscribeFailed": "Failed to subscribe. Please try again."
+      }
+    }
   }
 }
