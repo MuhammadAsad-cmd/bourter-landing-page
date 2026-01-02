@@ -11,12 +11,25 @@ export function LanguageProvider({ children }) {
         return DEFAULT_LOCALE;
     });
 
+    const applyLocaleToDocument = (nextLocale) => {
+        if (typeof document === "undefined") return;
+
+        document.documentElement.dir = nextLocale === "ar" ? "rtl" : "ltr";
+        document.documentElement.lang = nextLocale;
+    };
+
     // Load from localStorage after mount (client-side only)
     useEffect(() => {
         const stored = localStorage.getItem("locale");
-        if (stored && (stored === "en" || stored === "ar")) {
-            setLocaleState(stored);
-        }
+        const nextLocale =
+            stored && (stored === "en" || stored === "ar")
+                ? stored
+                : DEFAULT_LOCALE;
+
+        // Keep `document.dir/lang` in sync BEFORE locale-driven components (e.g. Swiper)
+        // mount/re-mount, to avoid RTL/LTR initialization issues on refresh.
+        applyLocaleToDocument(nextLocale);
+        setLocaleState(nextLocale);
     }, []);
 
     const setLocale = (newLocale) => {
@@ -24,12 +37,7 @@ export function LanguageProvider({ children }) {
         localStorage.setItem("locale", newLocale);
 
         // Update document direction and language immediately
-        if (newLocale === "ar") {
-            document.documentElement.dir = "rtl";
-        } else {
-            document.documentElement.dir = "ltr";
-        }
-        document.documentElement.lang = newLocale;
+        applyLocaleToDocument(newLocale);
     };
 
     return (

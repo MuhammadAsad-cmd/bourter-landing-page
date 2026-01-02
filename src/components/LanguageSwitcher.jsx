@@ -20,15 +20,6 @@ export default function LanguageSwitcher({ theme = "dark" }) {
   const hoverBg = "hover:bg-white/10";
 
   useEffect(() => {
-    if (locale === "ar") {
-      document.documentElement.dir = "rtl";
-    } else {
-      document.documentElement.dir = "ltr";
-    }
-    document.documentElement.lang = locale;
-  }, [locale]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
