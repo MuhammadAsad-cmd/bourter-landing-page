@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Country, City } from "country-state-city";
-import LocationMapPicker from "./LocationMapPicker";
 
 const PersonalInfoStep = ({
   formData,
@@ -12,6 +11,7 @@ const PersonalInfoStep = ({
   showConfirmPassword,
   setShowConfirmPassword,
   setFormData,
+  onLoginClick,
   t,
 }) => {
   const [countries] = useState(Country.getAllCountries());
@@ -20,37 +20,6 @@ const PersonalInfoStep = ({
     formData.country || ""
   );
   const [selectedCity, setSelectedCity] = useState(formData.city || "");
-  const [locationSearch, setLocationSearch] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState(() => {
-    const lat = formData.location?.lat;
-    const lng = formData.location?.long;
-    return {
-      lat: lat ? parseFloat(lat) : null,
-      lng: lng ? parseFloat(lng) : null,
-    };
-  });
-  // Handle location selection from map picker
-  const handleLocationSelect = (location) => {
-    setSelectedLocation(location);
-    setFormData((prev) => ({
-      ...prev,
-      location: {
-        lat: location.lat.toString(),
-        long: location.lng.toString(),
-      },
-    }));
-  };
-
-  // Sync location state with formData
-  useEffect(() => {
-    if (formData.location?.lat && formData.location?.long) {
-      const lat = parseFloat(formData.location.lat);
-      const lng = parseFloat(formData.location.long);
-      if (!isNaN(lat) && !isNaN(lng)) {
-        setSelectedLocation({ lat, lng });
-      }
-    }
-  }, [formData.location?.lat, formData.location?.long]);
 
   // Sync country and city from formData on initial load
   useEffect(() => {
@@ -107,6 +76,18 @@ const PersonalInfoStep = ({
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+      {/* Already have an account */}
+      <div className="text-center text-sm text-gray-600">
+        <span className="font-medium">{t("driverPage.form.personalInfo.alreadyHaveAccount")} </span>
+        <button
+          type="button"
+          onClick={onLoginClick}
+          className="text-primary font-semibold cursor-pointer hover:underline"
+        >
+          {t("driverPage.form.personalInfo.loginHere")}
+        </button>
+      </div>
+
       {/* Profile Picture Upload */}
       <div className="flex justify-center mb-8">
         <label className="cursor-pointer group relative">
@@ -299,18 +280,6 @@ const PersonalInfoStep = ({
             </svg>
           </div>
         </div>
-      </div>
-
-      <div className="group">
-        <label className="block text-sm font-bold text-gray-700 mb-2 group-focus-within:text-primary transition-colors">
-          {t("driverPage.form.personalInfo.location")} <span className="text-red-500">*</span>
-        </label>
-        <LocationMapPicker
-          selectedLocation={selectedLocation}
-          onLocationSelect={handleLocationSelect}
-          locationSearch={locationSearch}
-          onLocationSearchChange={setLocationSearch}
-        />
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">

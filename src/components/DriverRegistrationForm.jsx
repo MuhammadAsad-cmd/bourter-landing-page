@@ -44,10 +44,6 @@ const DriverRegistrationForm = () => {
     profilePicture: null,
     country: "",
     city: "",
-    location: {
-      lat: "",
-      long: "",
-    },
 
     // Vehicle Information
     vehicleType: "",
@@ -76,14 +72,31 @@ const DriverRegistrationForm = () => {
     { number: 4, title: t("driverPage.form.steps.choosePlan") },
   ];
 
+  // Backend onboarding steps come back on 401 from /rider/login:
+  // - step 0 => user needs to register => UI step 1 (Personal Information)
+  // - step 1 => vehicle details remaining => UI step 2 (Vehicle Information)
+  // - step 2 => payment incomplete => UI step 4 (Plans)
+  const apiStepToUiStep = (apiStep) => {
+    switch (Number(apiStep)) {
+      case 0:
+        return 1;
+      case 1:
+        return 2;
+      case 2:
+        return 4;
+      default:
+        return 1;
+    }
+  };
+
   // Determine which step to show based on user data
   const determineNextStep = (user) => {
     // If user doesn't have basic info, start at step 1
     if (!user.name || !user.phone || !user.address || !user.email) {
       return 1;
     }
-    // If user doesn't have city, country, or location, start at step 1
-    if (!user.city || !user.country || !user.location?.lat || !user.location?.long) {
+    // If user doesn't have city or country, start at step 1
+    if (!user.city || !user.country) {
       return 1;
     }
     // If user doesn't have vehicle info, start at step 2
@@ -118,10 +131,6 @@ const DriverRegistrationForm = () => {
       address: user.address || "",
       country: user.country || "",
       city: user.city || "",
-      location: {
-        lat: user.location?.lat?.toString() || "",
-        long: user.location?.long?.toString() || "",
-      },
       // Profile picture - store as URL string (will be handled by component)
       profilePicture: user.image || null,
       
@@ -179,17 +188,64 @@ const DriverRegistrationForm = () => {
         );
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          t("driverPage.form.errors.loginFailed")
-      );
+      const status = err.response?.status;
+      const data = err.response?.data;
+
+      // Backend uses 401 to indicate onboarding is incomplete; it includes `step`
+      if (status === 401 && typeof data?.step !== "undefined") {
+        const nextUiStep = apiStepToUiStep(data.step);
+        setError(data?.message || "");
+
+        // If backend provides user data, store/prefill it
+        if (data?.data) {
+          setUserData(data.data);
+          setUserId(data.data._id);
+          populateFormFromUserData(data.data);
+        } else {
+          // Step 0 comes with data: null — prefill at least the email from login
+          setFormData((prev) => ({
+            ...prev,
+            email: prev.email || loginData.email || "",
+          }));
+        }
+
+        // Sometimes backend may still send token; keep it if present
+        if (data?.token) {
+          setToken(data.token);
+        }
+
+        setCurrentStep(nextUiStep);
+        setShowLogin(false);
+        return;
+      }
+
+      // Show backend validation message (e.g. 400) on login step
+      if (status === 400) {
+        setError(data?.message || t("driverPage.form.errors.loginFailed"));
+        return;
+      }
+
+      setError(data?.message || t("driverPage.form.errors.loginFailed"));
     } finally {
       setLoading(false);
     }
   };
 
   const handleRegisterClick = () => {
+    setError("");
     setShowLogin(false);
+    setCurrentStep(1);
+  };
+
+  const handleAlreadyHaveAccountClick = () => {
+    setError("");
+    // Prefill login email if user already typed it in registration
+    setLoginData((prev) => ({
+      ...prev,
+      email: formData.email || prev.email,
+      password: "",
+    }));
+    setShowLogin(true);
     setCurrentStep(1);
   };
 
@@ -248,12 +304,6 @@ const DriverRegistrationForm = () => {
       }
       if (formData.city) {
         formDataToSend.append("city", formData.city);
-      }
-      if (formData.location?.lat) {
-        formDataToSend.append("location[lat]", formData.location.lat);
-      }
-      if (formData.location?.long) {
-        formDataToSend.append("location[long]", formData.location.long);
       }
       if (formData.profilePicture) {
         formDataToSend.append("image", formData.profilePicture);
@@ -343,9 +393,7 @@ const DriverRegistrationForm = () => {
           formData.color || 
           formData.vehicleNumber ||
           formData.city ||
-          formData.country ||
-          formData.location?.lat ||
-          formData.location?.long;
+          formData.country;
 
         if (!hasOtherData) {
           // No new data to send, just move to next step
@@ -386,14 +434,6 @@ const DriverRegistrationForm = () => {
       }
       if (formData.country) {
         formDataToSend.append("country", formData.country);
-        hasData = true;
-      }
-      if (formData.location?.lat) {
-        formDataToSend.append("location[lat]", formData.location.lat);
-        hasData = true;
-      }
-      if (formData.location?.long) {
-        formDataToSend.append("location[long]", formData.location.long);
         hasData = true;
       }
 
@@ -473,6 +513,7 @@ const DriverRegistrationForm = () => {
             showConfirmPassword={showConfirmPassword}
             setShowConfirmPassword={setShowConfirmPassword}
             setFormData={setFormData}
+            onLoginClick={handleAlreadyHaveAccountClick}
             t={t}
           />
         );

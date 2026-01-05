@@ -192,6 +192,8 @@
       },
       "personalInfo": {
         "upload": "رفع",
+        "alreadyHaveAccount": "لديك حساب بالفعل؟",
+        "loginHere": "تسجيل الدخول",
         "yourName": "اسمك",
         "namePlaceholder": "مثال: أحمد محمد",
         "phoneNumber": "رقم الهاتف",

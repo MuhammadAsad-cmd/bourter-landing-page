@@ -192,6 +192,8 @@
       },
       "personalInfo": {
         "upload": "Upload",
+        "alreadyHaveAccount": "Already have an account?",
+        "loginHere": "Login",
         "yourName": "Your Name",
         "namePlaceholder": "Ex. John Doe",
         "phoneNumber": "Phone Number",
