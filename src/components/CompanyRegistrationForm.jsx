@@ -3,15 +3,15 @@
 import { useLanguage } from "@/lib/i18n/language-context";
 import { getTranslations } from "@/lib/i18n/get-translations";
 import { useTranslations } from "@/lib/i18n/use-translations";
-import { useDriverRegistrationForm } from "./driver-registration/hooks/useDriverRegistrationForm";
-import { useDriverRegistrationAPI } from "./driver-registration/hooks/useDriverRegistrationAPI";
+import { useCompanyRegistrationForm } from "./company-registration/hooks/useCompanyRegistrationForm";
+import { useCompanyRegistrationAPI } from "./company-registration/hooks/useCompanyRegistrationAPI";
 import ProgressIndicator from "./driver-registration/ProgressIndicator";
-import StepRenderer from "./driver-registration/StepRenderer";
-import LoginButtonSection from "./driver-registration/LoginButtonSection";
-import FormNavigation from "./driver-registration/FormNavigation";
-import SuccessModal from "./driver-registration/SuccessModal";
+import StepRenderer from "./company-registration/StepRenderer";
+import LoginButtonSection from "./company-registration/LoginButtonSection";
+import FormNavigation from "./company-registration/FormNavigation";
+import SuccessModal from "./company-registration/SuccessModal";
 
-const DriverRegistrationForm = () => {
+const CompanyRegistrationForm = () => {
   const { locale } = useLanguage();
   const messages = getTranslations(locale);
   const { t } = useTranslations(messages);
@@ -27,8 +27,8 @@ const DriverRegistrationForm = () => {
     setUserData,
     token,
     setToken,
-    userId,
-    setUserId,
+    companyId,
+    setCompanyId,
     loginData,
     setLoginData,
     formData,
@@ -44,30 +44,23 @@ const DriverRegistrationForm = () => {
     handleAlreadyHaveAccountClick,
     handleBack,
     handleSubmit,
-  } = useDriverRegistrationForm(t);
+  } = useCompanyRegistrationForm(t);
 
-  const {
-    loading,
-    error,
-    setError,
-    handleLogin,
-    handleRegister,
-    handleVehicleDetails,
-    handleNext,
-  } = useDriverRegistrationAPI({
-    formData,
-    loginData,
-    userData,
-    userId,
-    token,
-    setFormData,
-    setUserData,
-    setUserId,
-    setToken,
-    setCurrentStep,
-    setShowLogin,
-    t,
-  });
+  const { loading, error, setError, handleLogin, handleNext } =
+    useCompanyRegistrationAPI({
+      formData,
+      loginData,
+      userData,
+      companyId,
+      token,
+      setFormData,
+      setUserData,
+      setCompanyId,
+      setToken,
+      setCurrentStep,
+      setShowLogin,
+      t,
+    });
 
   const onNext = async () => {
     await handleNext(currentStep, setCurrentStep);
@@ -78,11 +71,13 @@ const DriverRegistrationForm = () => {
       <div className="max-w-3xl mx-auto relative z-10">
         <div className="mb-10 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            {t("driverPage.form.createAccount")}{" "}
-            <span className="text-primary">{t("driverPage.form.accountHighlight")}</span>
+            {t("companyPage.form.createAccount")}{" "}
+            <span className="text-primary">
+              {t("companyPage.form.accountHighlight")}
+            </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-xl mx-auto leading-relaxed">
-            {t("driverPage.form.joinCommunity")}
+            {t("companyPage.form.joinCommunity")}
           </p>
         </div>
 
@@ -119,7 +114,9 @@ const DriverRegistrationForm = () => {
               onLoginClick={handleAlreadyHaveAccountClick}
               error={error}
               loading={loading}
-              userId={userId}
+              companyId={companyId}
+              userData={userData}
+              setError={setError}
               t={t}
             />
 
@@ -134,7 +131,7 @@ const DriverRegistrationForm = () => {
                 currentStep={currentStep}
                 handleBack={handleBack}
                 handleNext={onNext}
-                isLastStep={currentStep === 4}
+                isLastStep={currentStep === steps.length}
                 loading={loading}
                 t={t}
               />
@@ -150,4 +147,6 @@ const DriverRegistrationForm = () => {
   );
 };
 
-export default DriverRegistrationForm;
+export default CompanyRegistrationForm;
+
+

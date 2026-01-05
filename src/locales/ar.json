@@ -282,5 +282,123 @@
         "subscribeFailed": "فشل الاشتراك. يرجى المحاولة مرة أخرى."
       }
     }
+  },
+  "companyPage": {
+    "hero": {
+      "badge": "نقوم الآن بضم شركاء لوجستيين جدد",
+      "title": "تعاون مع",
+      "titleHighlight": "بورتر",
+      "description": "حسّن عملياتك اللوجستية ووسّع نطاقك. احصل على شبكة واسعة من السائقين الموثوقين وأدر شحناتك مع",
+      "highlight": "شفافية 100%",
+      "cta": "ابدأ تسجيل الشركة",
+      "companiesCount": "أكثر من 500 شركة",
+      "joinedThisMonth": "تم ضمها مؤخرًا"
+    },
+    "features": {
+      "management": {
+        "title": "إدارة فعّالة",
+        "description": "تابع جميع شحناتك لحظيًا. تمنحك لوحة التحكم السيطرة الكاملة على عملياتك."
+      },
+      "optimization": {
+        "title": "تحسين التكاليف",
+        "description": "قلّل التكاليف التشغيلية مع أسعار تنافسية. ادفع فقط مقابل ما تشحنه مع تسعير واضح."
+      },
+      "support": {
+        "title": "دعم للأعمال",
+        "description": "مديرو حسابات مخصصون للعملاء. نحن دائمًا جاهزون لمساعدتك على التوسع."
+      }
+    },
+    "formSection": {
+      "title": "لنحرّك أعمالك",
+      "description": "أكمل نموذج التسجيل أدناه للوصول إلى أسطولنا وتبسيط عمليات التسليم."
+    },
+    "form": {
+      "createAccount": "أنشئ",
+      "accountHighlight": "حساب شركتك",
+      "joinCommunity": "انضم إلى شبكة الشركات وابدأ الشحن بذكاء.",
+      "steps": {
+        "account": "الحساب",
+        "businessDetails": "تفاصيل الشركة",
+        "verification": "التحقق"
+      },
+      "login": {
+        "welcomeBack": "مرحباً بعودتك",
+        "loginToContinue": "سجّل الدخول لمتابعة التسجيل",
+        "emailAddress": "البريد الإلكتروني",
+        "emailPlaceholder": "company@example.com",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "أدخل كلمة المرور",
+        "loginButton": "تسجيل الدخول",
+        "loggingIn": "جاري تسجيل الدخول...",
+        "dontHaveAccount": "ليس لديك حساب؟",
+        "registerHere": "سجّل هنا"
+      },
+      "account": {
+        "title": "معلومات الحساب",
+        "subtitle": "أنشئ حساب شركتك للبدء.",
+        "alreadyHaveAccount": "لديك حساب بالفعل؟",
+        "loginHere": "تسجيل الدخول",
+        "companyName": "اسم الشركة",
+        "companyNamePlaceholder": "مثال: Acme Logistics",
+        "phoneNumber": "رقم الهاتف",
+        "phonePlaceholder": "+1 (555) 000-0000",
+        "emailAddress": "البريد الإلكتروني للعمل",
+        "emailPlaceholder": "company@example.com",
+        "address": "العنوان",
+        "addressPlaceholder": "العنوان الكامل",
+        "country": "الدولة",
+        "selectCountry": "اختر الدولة",
+        "city": "المدينة",
+        "selectCity": "اختر المدينة",
+        "selectCountryFirst": "اختر الدولة أولاً",
+        "password": "كلمة المرور",
+        "passwordPlaceholder": "أنشئ كلمة مرور",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور"
+      },
+      "details": {
+        "title": "تفاصيل الشركة",
+        "subtitle": "ارفع صور الشركة لإكمال الملف.",
+        "needAccountFirst": "يرجى إكمال خطوة الحساب أولاً للحصول على معرف الشركة.",
+        "upload": "رفع",
+        "clickToUpload": "اضغط للرفع",
+        "logoTitle": "شعار الشركة",
+        "logoDesc": "ارفع شعار علامتك التجارية (يفضل مربع).",
+        "coverTitle": "صورة الغلاف",
+        "coverDesc": "ارفع صورة غلاف/بنر لملف الشركة.",
+        "letterheadTitle": "صورة الترويسة",
+        "letterheadDesc": "ارفع صورة ترويسة للاستخدام في المستندات الرسمية."
+      },
+      "verification": {
+        "title": "التحقق",
+        "subtitle": "سنقوم بإبلاغك بحالة حسابك.",
+        "pendingTitle": "التحقق قيد المعالجة",
+        "pendingDesc": "تم إنشاء الحساب. سنقوم بالتحقق من تفاصيلك قريبًا.",
+        "verifiedTitle": "تم التحقق من الحساب",
+        "verifiedDesc": "تم التحقق من حساب الشركة وهو جاهز للاستخدام.",
+        "nextStepsTitle": "الخطوات التالية",
+        "nextStep1": "سجّل الدخول إلى بوابة/تطبيق الشركة باستخدام بياناتك.",
+        "nextStep2": "للمساعدة، تواصل مع الدعم من داخل التطبيق."
+      },
+      "navigation": {
+        "back": "رجوع",
+        "nextStep": "الخطوة التالية",
+        "finish": "إنهاء",
+        "saving": "جاري الحفظ...",
+        "submitting": "جاري الإرسال..."
+      },
+      "successModal": {
+        "title": "تم التسجيل بنجاح!",
+        "description": "أنت جاهز! لقد سجلت تفاصيل شركتك بنجاح.",
+        "continue": "متابعة"
+      },
+      "errors": {
+        "loginFailed": "فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد الخاصة بك.",
+        "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
+        "saveFailed": "فشل حفظ التفاصيل. يرجى المحاولة مرة أخرى.",
+        "companyIdNotFound": "لم يتم العثور على معرف الشركة. يرجى التسجيل أولاً.",
+        "passwordMismatch": "كلمتا المرور غير متطابقتين."
+      }
+    }
   }
 }

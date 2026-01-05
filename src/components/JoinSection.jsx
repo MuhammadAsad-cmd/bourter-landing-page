@@ -114,8 +114,7 @@ const JoinSection = () => {
                             </div>
 
                             <Link
-                                href="https://global-zair-guide-59937.web.app/"
-                                target="_blank"
+                                href="/join-as-company"
                                 className="w-full text-center py-4 rounded-xl font-bold text-[#06294A] border-2 border-[#06294A] hover:bg-[#06294A] hover:text-white transition-all duration-300"
                             >
                                 {t("joinSection.companyButton")}

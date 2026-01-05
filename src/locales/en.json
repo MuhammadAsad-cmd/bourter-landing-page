@@ -282,5 +282,123 @@
         "subscribeFailed": "Failed to subscribe. Please try again."
       }
     }
+  },
+  "companyPage": {
+    "hero": {
+      "badge": "Now onboarding new logistics partners",
+      "title": "Partner with",
+      "titleHighlight": "Bourter",
+      "description": "Optimize your logistics. Expand your reach. Access a vast network of reliable drivers and manage your shipments with",
+      "highlight": "100% transparency",
+      "cta": "Start Company Registration",
+      "companiesCount": "500+ Companies",
+      "joinedThisMonth": "Onboarded recently"
+    },
+    "features": {
+      "management": {
+        "title": "Efficient Management",
+        "description": "Track all your shipments in real-time. Our dashboard gives you complete control over your logistics operations."
+      },
+      "optimization": {
+        "title": "Cost Optimization",
+        "description": "Reduce overhead costs with our competitive rates. Pay only for what you ship with transparent pricing models."
+      },
+      "support": {
+        "title": "Business Support",
+        "description": "Dedicated account managers for enterprise clients. We are always ready to help scale your operations."
+      }
+    },
+    "formSection": {
+      "title": "Let's Get Your Business Moving",
+      "description": "Complete the registration form below to access our fleet and streamline your delivery process."
+    },
+    "form": {
+      "createAccount": "Create Your",
+      "accountHighlight": "Company Account",
+      "joinCommunity": "Join our network of businesses and start shipping smarter.",
+      "steps": {
+        "account": "Account",
+        "businessDetails": "Business Details",
+        "verification": "Verification"
+      },
+      "login": {
+        "welcomeBack": "Welcome Back",
+        "loginToContinue": "Login to continue your registration",
+        "emailAddress": "Email Address",
+        "emailPlaceholder": "company@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "loginButton": "Login",
+        "loggingIn": "Logging in...",
+        "dontHaveAccount": "Don't have an account?",
+        "registerHere": "Register here"
+      },
+      "account": {
+        "title": "Account Information",
+        "subtitle": "Create your company account to get started.",
+        "alreadyHaveAccount": "Already have an account?",
+        "loginHere": "Login",
+        "companyName": "Company Name",
+        "companyNamePlaceholder": "Ex. Acme Logistics",
+        "phoneNumber": "Phone Number",
+        "phonePlaceholder": "+1 (555) 000-0000",
+        "emailAddress": "Work Email Address",
+        "emailPlaceholder": "company@example.com",
+        "address": "Address",
+        "addressPlaceholder": "Complete address",
+        "country": "Country",
+        "selectCountry": "Select Country",
+        "city": "City",
+        "selectCity": "Select City",
+        "selectCountryFirst": "Select Country First",
+        "password": "Password",
+        "passwordPlaceholder": "Create password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm password"
+      },
+      "details": {
+        "title": "Company Details",
+        "subtitle": "Upload your company images to complete your profile.",
+        "needAccountFirst": "Please complete the account step first to get your company ID.",
+        "upload": "Upload",
+        "clickToUpload": "Click to upload",
+        "logoTitle": "Company Logo",
+        "logoDesc": "Upload your brand logo (square works best).",
+        "coverTitle": "Cover Image",
+        "coverDesc": "Upload a banner/cover image for your company profile.",
+        "letterheadTitle": "Letterhead Image",
+        "letterheadDesc": "Upload a letterhead image for official documents."
+      },
+      "verification": {
+        "title": "Verification",
+        "subtitle": "We’ll keep you updated on your account status.",
+        "pendingTitle": "Verification in progress",
+        "pendingDesc": "Your account is created. We’ll verify your details shortly.",
+        "verifiedTitle": "Account verified",
+        "verifiedDesc": "Your company account is verified and ready to use.",
+        "nextStepsTitle": "Next steps",
+        "nextStep1": "Login in your company portal/app using your credentials.",
+        "nextStep2": "If you need help, contact support from the app."
+      },
+      "navigation": {
+        "back": "Back",
+        "nextStep": "Next Step",
+        "finish": "Finish",
+        "saving": "Saving...",
+        "submitting": "Submitting..."
+      },
+      "successModal": {
+        "title": "Sign Up Successfully!",
+        "description": "You're all set! You successfully registered your company details.",
+        "continue": "Continue"
+      },
+      "errors": {
+        "loginFailed": "Login failed. Please check your credentials.",
+        "registrationFailed": "Registration failed. Please try again.",
+        "saveFailed": "Failed to save details. Please try again.",
+        "companyIdNotFound": "Company ID not found. Please register first.",
+        "passwordMismatch": "Passwords do not match."
+      }
+    }
   }
 }

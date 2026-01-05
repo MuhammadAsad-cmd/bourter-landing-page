@@ -72,12 +72,11 @@ export default function HeroSection() {
                 {t("navigation.joinDriver")}
               </Link>
               <Link
-                target="_blank"
-                href="#"
+                href="/join-as-company"
                 className=" rounded-lg px-2.5 sm:px-6 py-2 sm:py-2.5 cursor-pointer text-sm font-bold text-white transition-all hover:opacity-90"
                 style={{
                   background:
-                    "linear-gradient(130.4deg, #0053A2 15.06%, #06294A 87.46%)",
+                    "linear-gradient(130.4deg, #D46E16 15.06%, #E57F1D 87.46%)",
                   boxShadow:
                     "2px 2px 2px 0px #FFFFFF33 inset, -2px -2px 2px 0px #FFFFFF33 inset",
                 }}
