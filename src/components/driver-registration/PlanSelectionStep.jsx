@@ -280,7 +280,7 @@ const PlanSelectionStep = ({ formData, setFormData, userId, t, setShowSuccessMod
                         {t("driverPage.form.planSelection.processing")}
                       </span>
                     ) : (
-                      plan.amount === 0 ? (t("driverPage.form.planSelection.selectFree") || "Select Free Plan") : t("driverPage.form.planSelection.subscribe")
+                      plan.amount === 0 ? t("driverPage.form.planSelection.selectFree") : t("driverPage.form.planSelection.subscribe")
                     )}
                   </button>
                 </div>

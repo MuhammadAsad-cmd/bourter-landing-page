@@ -257,6 +257,7 @@
         "unlimitedRides": "Unlimited ride requests",
         "inAppSupport": "In-app navigation & support",
         "subscribe": "Subscribe",
+        "selectFree": "Select Free Plan",
         "processing": "Processing...",
         "noPlansAvailable": "No plans available for this period.",
         "failedToLoad": "Failed to load plans. Please try again."
