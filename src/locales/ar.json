@@ -319,7 +319,8 @@
       "steps": {
         "account": "الحساب",
         "businessDetails": "تفاصيل الشركة",
-        "verification": "التحقق"
+        "verification": "التحقق",
+        "planSelection": "اختيار الخطة"
       },
       "login": {
         "welcomeBack": "مرحباً بعودتك",
@@ -392,12 +393,37 @@
         "description": "أنت جاهز! لقد سجلت تفاصيل شركتك بنجاح.",
         "continue": "متابعة"
       },
+      "planSelection": {
+        "title": "اختر",
+        "titleHighlight": "خطة الشركة",
+        "description": "اختر أفضل خطة تناسب احتياجات عملك وحجم الشحن.",
+        "monthly": "شهري",
+        "yearly": "سنوي",
+        "save20": "وفر 20%",
+        "perfectFor": "مثالي لـ",
+        "companies": "الشركات",
+        "month": "شهر",
+        "year": "سنة",
+        "shipmentTracking": "تتبع الشحنات في الوقت الفعلي",
+        "driverNetwork": "الوصول إلى شبكة السائقين",
+        "unlimitedShipments": "شحنات غير محدودة",
+        "businessSupport": "دعم الأعمال المخصص",
+        "subscribe": "اشترك",
+        "selectFree": "اختر الخطة المجانية",
+        "processing": "جاري المعالجة...",
+        "freePlanSuccess": "تم اختيار الخطة المجانية بنجاح! اشتراكك نشط الآن.",
+        "paymentRedirected": "جاري التوجيه إلى بوابة الدفع...",
+        "noPlansAvailable": "لا توجد خطط متاحة لهذه الفترة.",
+        "failedToLoad": "فشل تحميل الخطط. يرجى المحاولة مرة أخرى."
+      },
       "errors": {
         "loginFailed": "فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد الخاصة بك.",
         "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى.",
         "saveFailed": "فشل حفظ التفاصيل. يرجى المحاولة مرة أخرى.",
         "companyIdNotFound": "لم يتم العثور على معرف الشركة. يرجى التسجيل أولاً.",
-        "passwordMismatch": "كلمتا المرور غير متطابقتين."
+        "passwordMismatch": "كلمتا المرور غير متطابقتين.",
+        "subscribeFailed": "فشل الاشتراك في الخطة. يرجى المحاولة مرة أخرى.",
+        "paymentUrlNotFound": "لم يتم العثور على رابط الدفع. يرجى الاتصال بالدعم."
       }
     }
   }

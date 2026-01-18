@@ -183,6 +183,58 @@ export const useCompanyRegistrationAPI = ({
     }
   };
 
+  const handlePlanSubscribe = async (packageId) => {
+    if (!companyId) {
+      setError(t("companyPage.form.errors.companyIdNotFound"));
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/company/subscribe`,
+        {
+          userId: companyId,
+          packageId: packageId,
+        },
+        {
+          headers: {
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+        }
+      );
+
+      if (response.data?.result || response.data?.success) {
+        // Get payment URL from response.data.paymentDetails.url
+        const paymentUrl = response.data.data?.paymentDetails?.url;
+        
+        // If paymentUrl is empty, it means it's a free plan
+        if (!paymentUrl || paymentUrl === "") {
+          // Free plan - subscription completed, proceed to success
+          if (response.data?.data) {
+            setUserData((prev) => ({ ...(prev || {}), ...response.data.data }));
+          }
+          return { success: true, isFree: true };
+        } else {
+          // Paid plan - return payment URL
+          return { success: true, isFree: false, paymentUrl };
+        }
+      } else {
+        setError(response.data?.message || t("companyPage.form.errors.subscribeFailed"));
+        return { success: false };
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || t("companyPage.form.errors.subscribeFailed")
+      );
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleNext = async (currentStep, setStep) => {
     if (currentStep === 1) {
       if (formData.password !== formData.confirmPassword) {
@@ -194,6 +246,12 @@ export const useCompanyRegistrationAPI = ({
         await handleRegister();
         return;
       }
+      
+      // If user is already logged in and verified with package, stay on step 1
+      if (userData?.accountVerify && userData?.packageDetails) {
+        return; // Don't move forward, stay on step 1
+      }
+      
       setStep(2);
       return;
     }
@@ -203,7 +261,24 @@ export const useCompanyRegistrationAPI = ({
       return;
     }
 
-    if (currentStep < 3) {
+    if (currentStep === 3) {
+      // Verification step - move to plan selection (or skip if already verified)
+      if (userData?.accountVerify) {
+        // Already verified, check if package is missing
+        if (!userData?.packageDetails) {
+          setStep(4);
+        } else {
+          // Everything complete, go back to step 1
+          setStep(1);
+        }
+      } else {
+        // Not verified, move to plan selection
+        setStep(4);
+      }
+      return;
+    }
+
+    if (currentStep < 4) {
       setStep(currentStep + 1);
     }
   };
@@ -215,6 +290,7 @@ export const useCompanyRegistrationAPI = ({
     handleLogin,
     handleRegister,
     handleCompanyDetails,
+    handlePlanSubscribe,
     handleNext,
   };
 };

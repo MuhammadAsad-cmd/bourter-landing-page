@@ -21,6 +21,8 @@ const StepRenderer = ({
   error,
   loading,
   userId,
+  setShowSuccessModal,
+  setUserData,
   t,
 }) => {
   if (showLogin) {
@@ -77,6 +79,8 @@ const StepRenderer = ({
           setFormData={setFormData}
           userId={userId}
           t={t}
+          setShowSuccessModal={setShowSuccessModal}
+          setUserData={setUserData}
         />
       );
     default:

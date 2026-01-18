@@ -120,6 +120,8 @@ const DriverRegistrationForm = () => {
               error={error}
               loading={loading}
               userId={userId}
+              setShowSuccessModal={setShowSuccessModal}
+              setUserData={setUserData}
               t={t}
             />
 

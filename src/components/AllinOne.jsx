@@ -32,7 +32,7 @@ const AllinOne = () => {
               className="object-contain w-[261px] h-20"
             />
           </Link>
-          <Link target="_blank" href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide">
+          <Link target="_blank" href="">
             <Image
               src="/images/pbtn (1).svg"
               alt="App Store"

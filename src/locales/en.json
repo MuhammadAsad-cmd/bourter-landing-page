@@ -319,7 +319,8 @@
       "steps": {
         "account": "Account",
         "businessDetails": "Business Details",
-        "verification": "Verification"
+        "verification": "Verification",
+        "planSelection": "Plan Selection"
       },
       "login": {
         "welcomeBack": "Welcome Back",
@@ -392,12 +393,37 @@
         "description": "You're all set! You successfully registered your company details.",
         "continue": "Continue"
       },
+      "planSelection": {
+        "title": "Choose Your",
+        "titleHighlight": "Company Plan",
+        "description": "Select the best plan that fits your business needs and shipping volume.",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save20": "SAVE 20%",
+        "perfectFor": "Perfect for",
+        "companies": "companies",
+        "month": "month",
+        "year": "year",
+        "shipmentTracking": "Real-time shipment tracking",
+        "driverNetwork": "Access to driver network",
+        "unlimitedShipments": "Unlimited shipments",
+        "businessSupport": "Dedicated business support",
+        "subscribe": "Subscribe",
+        "selectFree": "Select Free Plan",
+        "processing": "Processing...",
+        "freePlanSuccess": "Free plan selected successfully! Your subscription is now active.",
+        "paymentRedirected": "Redirecting to payment gateway...",
+        "noPlansAvailable": "No plans available for this period.",
+        "failedToLoad": "Failed to load plans. Please try again."
+      },
       "errors": {
         "loginFailed": "Login failed. Please check your credentials.",
         "registrationFailed": "Registration failed. Please try again.",
         "saveFailed": "Failed to save details. Please try again.",
         "companyIdNotFound": "Company ID not found. Please register first.",
-        "passwordMismatch": "Passwords do not match."
+        "passwordMismatch": "Passwords do not match.",
+        "subscribeFailed": "Failed to subscribe to plan. Please try again.",
+        "paymentUrlNotFound": "Payment URL not found. Please contact support."
       }
     }
   }

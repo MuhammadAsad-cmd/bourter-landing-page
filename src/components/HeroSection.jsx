@@ -212,7 +212,7 @@ export default function HeroSection() {
                     </Link>
                     <Link
                       target="_blank"
-                      href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide"
+                      href=""
                     >
                       <Image
                         src="/images/btn (1).svg"
@@ -275,7 +275,7 @@ export default function HeroSection() {
                     </Link>
                     <Link
                       target="_blank"
-                      href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide"
+                      href=""
                     >
                       <Image
                         src="/images/btn (1).svg"
@@ -336,7 +336,7 @@ export default function HeroSection() {
                         className="object-contain w-full max-w-[261px] h-20"
                       />
                     </Link>
-                    <Link href="https://play.google.com/store/apps/details?id=com.bitknit.global_zahir_guide">
+                    <Link href="">
                       <Image
                         src="/images/btn (1).svg"
                         alt="play Store"

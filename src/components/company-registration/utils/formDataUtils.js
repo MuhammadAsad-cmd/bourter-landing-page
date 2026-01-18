@@ -10,6 +10,8 @@ export const createInitialCompanyFormData = () => ({
   logoImage: null,
   coverImage: null,
   letterheadImage: null,
+  selectedPlan: "",
+  planType: "yearly",
 });
 
 export const populateCompanyFormFromUserData = (company) => ({
