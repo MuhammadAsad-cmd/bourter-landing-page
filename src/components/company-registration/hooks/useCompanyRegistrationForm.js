@@ -19,8 +19,7 @@ export const useCompanyRegistrationForm = (t) => {
   const steps = [
     { number: 1, title: t("companyPage.form.steps.account") },
     { number: 2, title: t("companyPage.form.steps.businessDetails") },
-    { number: 3, title: t("companyPage.form.steps.verification") },
-    { number: 4, title: t("companyPage.form.steps.planSelection") },
+    { number: 3, title: t("companyPage.form.steps.planSelection") },
   ];
 
   const handleLoginChange = (e) => {

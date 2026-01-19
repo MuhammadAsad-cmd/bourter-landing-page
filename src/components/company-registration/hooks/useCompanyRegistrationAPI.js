@@ -247,8 +247,8 @@ export const useCompanyRegistrationAPI = ({
         return;
       }
       
-      // If user is already logged in and verified with package, stay on step 1
-      if (userData?.accountVerify && userData?.packageDetails) {
+      // If user is already logged in and has package, stay on step 1
+      if (userData?.packageDetails) {
         return; // Don't move forward, stay on step 1
       }
       
@@ -261,24 +261,7 @@ export const useCompanyRegistrationAPI = ({
       return;
     }
 
-    if (currentStep === 3) {
-      // Verification step - move to plan selection (or skip if already verified)
-      if (userData?.accountVerify) {
-        // Already verified, check if package is missing
-        if (!userData?.packageDetails) {
-          setStep(4);
-        } else {
-          // Everything complete, go back to step 1
-          setStep(1);
-        }
-      } else {
-        // Not verified, move to plan selection
-        setStep(4);
-      }
-      return;
-    }
-
-    if (currentStep < 4) {
+    if (currentStep < 3) {
       setStep(currentStep + 1);
     }
   };

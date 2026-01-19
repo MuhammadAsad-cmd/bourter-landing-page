@@ -129,7 +129,7 @@ const CompanyRegistrationForm = () => {
                 onRegisterClick={handleRegisterClick}
                 t={t}
               />
-            ) : currentStep !== 4 ? (
+            ) : currentStep !== 3 ? (
               <FormNavigation
                 currentStep={currentStep}
                 handleBack={handleBack}
