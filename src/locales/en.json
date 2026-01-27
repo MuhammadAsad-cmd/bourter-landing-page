@@ -136,8 +136,9 @@
     "newsletter": "Newsletter",
     "emailPlaceholder": "Enter your email",
     "subscribe": "Subscribe",
-    "copyright": "@2025 Bourter",
-    "allRightsReserved": "All Rights Reserved"
+    "copyright": "@2026 Bourter",
+    "allRightsReserved": "All Rights Reserved",
+    "privacyPolicy": "Privacy Policy"
   },
   "driverPage": {
     "hero": {
@@ -426,6 +427,111 @@
         "subscribeFailed": "Failed to subscribe to plan. Please try again.",
         "paymentUrlNotFound": "Payment URL not found. Please contact support."
       }
+    }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "subtitle": "bourter (Porter) Application",
+    "lastUpdated": "Last Updated",
+    "updateDate": "January 27, 2026",
+    "introduction": "At bourter (Porter), we respect your privacy and are committed to protecting your personal data in accordance with applicable laws in Libya and international best practices. This Privacy Policy explains how we collect, use, store, and protect your information when using our freight transportation application.",
+    "section1": {
+      "title": "1. Information We Collect",
+      "subsectionA": {
+        "title": "a) Personal Information",
+        "item1": "Full name",
+        "item2": "Phone number",
+        "item3": "Email address",
+        "item4": "Password (encrypted)"
+      },
+      "subsectionB": {
+        "title": "b) Identity Verification Documents (Drivers)",
+        "content": "National ID or passport image"
+      },
+      "subsectionC": {
+        "title": "c) Vehicle Information",
+        "item1": "License plate number",
+        "item2": "Vehicle registration booklet",
+        "item3": "Vehicle type",
+        "item4": "Vehicle specifications and details"
+      },
+      "subsectionD": {
+        "title": "d) Location Information",
+        "item1": "User or driver location",
+        "item2": "Pickup and delivery locations",
+        "item3": "Trip route during active orders only",
+        "note": "We do not track location in the background without an active order."
+      },
+      "subsectionE": {
+        "title": "e) Order Information",
+        "item1": "Shipment details",
+        "item2": "Pickup and delivery times",
+        "item3": "Order status and updates"
+      },
+      "subsectionF": {
+        "title": "f) Device Information",
+        "item1": "Device type and operating system",
+        "item2": "IP address",
+        "item3": "Technical data for security and performance"
+      }
+    },
+    "section2": {
+      "title": "2. Purpose of Data Collection",
+      "item1": "Provide and operate freight transportation services",
+      "item2": "Verify driver identities",
+      "item3": "Ensure safety and operational integrity",
+      "item4": "Match customers with drivers",
+      "item5": "Improve service quality and user experience",
+      "item6": "Comply with legal requirements in Libya"
+    },
+    "section3": {
+      "title": "3. Data Sharing",
+      "intro": "bourter (Porter) does not sell or rent personal data to third parties. Data may be shared only in the following cases:",
+      "item1": "Between customers and drivers to fulfill orders",
+      "item2": "With trusted service providers (e.g., maps, notifications)",
+      "item3": "When required by legal or governmental authorities"
+    },
+    "section4": {
+      "title": "4. Data Storage and Protection",
+      "item1": "Data is stored on secure servers",
+      "item2": "Appropriate technical and organizational security measures are applied",
+      "item3": "Sensitive data is encrypted and protected from unauthorized access",
+      "item4": "Data may be stored outside Libya with trusted service providers while maintaining data protection standards."
+    },
+    "section5": {
+      "title": "5. App Permissions",
+      "item1": "Location",
+      "item2": "Notifications",
+      "item3": "Camera (for shipment or document verification)",
+      "note": "You can manage permissions through your device settings."
+    },
+    "section6": {
+      "title": "6. User Rights",
+      "item1": "Access their personal data",
+      "item2": "Update or correct their data",
+      "item3": "Request account deletion",
+      "item4": "Stop using the service at any time"
+    },
+    "section7": {
+      "title": "7. Account and Data Deletion",
+      "intro": "Users may request account and personal data deletion through:",
+      "item1": "App settings",
+      "item2": "In-app customer support",
+      "note": "Requests are processed within a reasonable timeframe."
+    },
+    "section8": {
+      "title": "8. Children's Privacy",
+      "content": "bourter (Porter) services are not intended for users under the age of 18, and we do not knowingly collect their data."
+    },
+    "section9": {
+      "title": "9. Changes to This Privacy Policy",
+      "content": "We may update this Privacy Policy from time to time. Users will be notified of any material changes through the app."
+    },
+    "section10": {
+      "title": "10. Contact Us",
+      "intro": "If you have any questions about this Privacy Policy, please contact us via:",
+      "item1": "In-app support in bourter (Porter)",
+      "item2": "Email: support@bourter.com"
     }
   }
 }
